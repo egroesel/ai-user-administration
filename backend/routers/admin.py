@@ -5,6 +5,7 @@ from database import get_db
 import models
 import schemas
 from security import get_current_admin_user
+from email_service import send_test_email
 
 router = APIRouter(prefix="/api/admin", tags=["Admin"])
 
@@ -78,3 +79,42 @@ def delete_user(
     db.commit()
 
     return {"message": "User deleted successfully"}
+
+
+@router.post("/test-email", response_model=schemas.MessageResponse)
+def send_test_email_endpoint(
+    test_email_data: schemas.TestEmailRequest,
+    current_admin: models.User = Depends(get_current_admin_user),
+):
+    """
+    Send test emails for testing email functionality
+
+    Available email types:
+    - welcome: Welcome email
+    - password_reset: Password reset email (with test token)
+    - account_activated: Account activated notification
+    - account_deactivated: Account deactivated notification
+    - test_simple: Simple test email
+    """
+
+    valid_types = ["welcome", "password_reset", "account_activated", "account_deactivated", "test_simple"]
+
+    if test_email_data.email_type not in valid_types:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid email type. Must be one of: {', '.join(valid_types)}"
+        )
+
+    success = send_test_email(
+        test_email_data.email,
+        test_email_data.email_type,
+        test_email_data.user_name
+    )
+
+    if not success:
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to send test email. Check email service configuration."
+        )
+
+    return {"message": f"Test email '{test_email_data.email_type}' sent successfully to {test_email_data.email}"}

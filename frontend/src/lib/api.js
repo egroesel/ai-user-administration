@@ -125,6 +125,17 @@ export async function deleteUser(userId) {
 	return apiRequest(`/api/admin/users/${userId}`, { method: 'DELETE' });
 }
 
+export async function sendTestEmail(email, emailType, userName = null) {
+	return apiRequest('/api/admin/test-email', {
+		method: 'POST',
+		body: JSON.stringify({
+			email,
+			email_type: emailType,
+			user_name: userName
+		})
+	});
+}
+
 export function getStoredUser() {
 	const userStr = localStorage.getItem('user');
 	return userStr ? JSON.parse(userStr) : null;

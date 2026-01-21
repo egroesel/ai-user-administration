@@ -72,6 +72,12 @@ class AdminUserUpdate(BaseModel):
     is_admin: Optional[bool] = None
 
 
+class TestEmailRequest(BaseModel):
+    email: EmailStr
+    email_type: str = Field(..., description="Type: welcome, password_reset, account_activated, account_deactivated, test_simple")
+    user_name: Optional[str] = None
+
+
 # Generic response
 class MessageResponse(BaseModel):
     message: str
