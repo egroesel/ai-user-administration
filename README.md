@@ -4,74 +4,30 @@ Ein vollständiges Nutzerverwaltungssystem mit FastAPI (Backend) und SvelteKit (
 
 ## Features
 
-- Benutzerregistrierung mit Validierung
-- Login/Logout mit Session-Management und JWT-Tokens
-- Profilansicht und -bearbeitung
-- Admin-Panel mit Nutzerverwaltung (aktivieren/deaktivieren/löschen)
-- Passwort zurücksetzen via E-Mail (Resend)
-- Two-Factor-Authentifizierung (TOTP)
-- Zwei Benutzerrollen: Admin und User
+- ✅ Benutzerregistrierung mit Validierung
+- ✅ Login/Logout mit Session-Management und JWT-Tokens
+- ✅ Profilansicht und -bearbeitung
+- ✅ Admin-Panel mit Nutzerverwaltung
+- ✅ Passwort zurücksetzen via E-Mail (Resend)
+- ✅ Two-Factor-Authentifizierung (TOTP)
+- ✅ Email-Test-Tool für Admins
+- ✅ Zwei Benutzerrollen: Admin und User
 
 ## Tech Stack
 
-### Backend
-- **FastAPI**: Python Web Framework
-- **PostgreSQL**: Datenbank
-- **SQLAlchemy**: ORM
-- **Resend**: E-Mail-Versand
-- **PyOTP**: 2FA-Implementierung
-- **JWT**: Token-basierte Authentifizierung
+**Backend:**
+- FastAPI + Python
+- PostgreSQL + SQLAlchemy
+- JWT + bcrypt
+- Resend (Email)
+- PyOTP (2FA)
 
-### Frontend
-- **SvelteKit**: Frontend Framework
-- **Tailwind CSS**: Styling
-- **Vite**: Build Tool
+**Frontend:**
+- SvelteKit
+- Tailwind CSS
+- Vite
 
-## Projektstruktur
-
-```
-ai-user-administration/
-├── backend/                  # FastAPI Backend
-│   ├── routers/             # API Endpoints
-│   │   ├── auth.py          # Authentifizierung
-│   │   ├── users.py         # Benutzerprofil
-│   │   ├── admin.py         # Admin-Funktionen
-│   │   └── two_factor.py    # 2FA
-│   ├── config.py            # Konfiguration
-│   ├── database.py          # Datenbankverbindung
-│   ├── models.py            # SQLAlchemy Models
-│   ├── schemas.py           # Pydantic Schemas
-│   ├── security.py          # Authentifizierungslogik
-│   ├── email_service.py     # E-Mail-Funktionen
-│   ├── two_factor.py        # 2FA-Logik
-│   ├── main.py              # Hauptanwendung
-│   └── requirements.txt     # Python Dependencies
-│
-├── frontend/                # SvelteKit Frontend
-│   ├── src/
-│   │   ├── lib/
-│   │   │   └── api.js       # API Client
-│   │   ├── routes/          # Seiten
-│   │   │   ├── +layout.svelte
-│   │   │   ├── +page.svelte
-│   │   │   ├── login/
-│   │   │   ├── register/
-│   │   │   ├── profile/
-│   │   │   ├── admin/
-│   │   │   ├── forgot-password/
-│   │   │   └── reset-password/
-│   │   ├── app.html
-│   │   └── app.css          # Tailwind CSS
-│   ├── package.json
-│   ├── svelte.config.js
-│   ├── vite.config.js
-│   ├── tailwind.config.js
-│   └── postcss.config.js
-│
-└── README.md
-```
-
-## Installation & Setup
+## Schnellstart
 
 ### Voraussetzungen
 
@@ -89,338 +45,175 @@ cd ai-user-administration
 
 ### 2. Backend Setup
 
-#### PostgreSQL Datenbank erstellen
-
 ```bash
-# PostgreSQL starten
-brew services start postgresql  # macOS
-# oder
-sudo systemctl start postgresql  # Linux
+cd backend
+python -m venv venv
+source venv/bin/activate  # macOS/Linux
+
+pip install -r requirements.txt
 
 # Datenbank erstellen
 createdb user_management
 
-# Alternativ via psql:
-psql postgres
-CREATE DATABASE user_management;
-\q
-```
-
-#### Python Virtual Environment
-
-```bash
-cd backend
-python -m venv venv
-
-# Aktivieren
-source venv/bin/activate  # macOS/Linux
-# oder
-venv\Scripts\activate  # Windows
-```
-
-#### Dependencies installieren
-
-```bash
-pip install -r requirements.txt
-```
-
-#### Umgebungsvariablen konfigurieren
-
-```bash
+# .env konfigurieren
 cp .env.example .env
+# Bearbeite .env und setze Werte
+
+# Backend starten
+uvicorn main:app --reload
 ```
 
-Bearbeite `.env` und setze folgende Werte:
+Backend läuft auf: `http://localhost:8000`
 
-```env
-# Database
-DATABASE_URL=postgresql://username:password@localhost:5432/user_management
-
-# Security (generiere einen sicheren Schlüssel)
-SECRET_KEY=your-secret-key-min-32-characters-long
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-# Email (Resend)
-RESEND_API_KEY=re_your_resend_api_key
-FROM_EMAIL=noreply@yourdomain.com
-
-# Application
-FRONTEND_URL=http://localhost:5173
-BACKEND_URL=http://localhost:8000
-
-# Admin user (wird beim ersten Start erstellt)
-ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=changeme123
-```
-
-**Secret Key generieren:**
-
-```bash
-python -c "import secrets; print(secrets.token_urlsafe(32))"
-```
-
-#### Backend starten
-
-```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
-```
-
-Das Backend läuft nun auf: `http://localhost:8000`
-API-Dokumentation: `http://localhost:8000/docs`
+**Siehe [backend/BACKEND.md](backend/BACKEND.md) für Details**
 
 ### 3. Frontend Setup
 
-Öffne ein neues Terminal:
-
 ```bash
 cd frontend
-```
-
-#### Dependencies installieren
-
-```bash
 npm install
-```
 
-#### Umgebungsvariablen konfigurieren
-
-```bash
+# .env konfigurieren
 cp .env.example .env
-```
+# Bearbeite .env (normalerweise keine Änderung nötig)
 
-Bearbeite `.env`:
-
-```env
-PUBLIC_API_URL=http://localhost:8000
-```
-
-#### Frontend starten
-
-```bash
+# Frontend starten
 npm run dev
 ```
 
-Das Frontend läuft nun auf: `http://localhost:5173`
+Frontend läuft auf: `http://localhost:5173`
+
+**Siehe [frontend/FRONTEND.md](frontend/FRONTEND.md) für Details**
 
 ## Verwendung
 
-### 1. Admin-Login
+### Erster Admin-Login
 
-Beim ersten Start wird automatisch ein Admin-Benutzer mit den Daten aus der `.env` erstellt:
+Der Admin-User wird automatisch beim ersten Backend-Start erstellt:
 
-- **E-Mail**: `admin@example.com` (oder deine konfigurierte E-Mail)
-- **Passwort**: `changeme123` (oder dein konfiguriertes Passwort)
+- **E-Mail**: Aus `ADMIN_EMAIL` in `.env`
+- **Passwort**: Aus `ADMIN_PASSWORD` in `.env`
 
 **Wichtig**: Ändere das Admin-Passwort nach dem ersten Login!
 
-### 2. Neue Benutzer registrieren
+### Als normaler Benutzer
 
 1. Gehe zu `http://localhost:5173/register`
-2. Fülle das Registrierungsformular aus
-3. Du erhältst eine Willkommens-E-Mail (wenn Resend konfiguriert ist)
-4. Melde dich mit deinen Zugangsdaten an
+2. Erstelle einen Account
+3. Melde dich an
+4. Verwalte dein Profil und aktiviere optional 2FA
 
-### 3. Profil verwalten
+### Als Admin
 
-Nach dem Login kannst du:
+1. Melde dich an
+2. Gehe zum Admin-Panel
+3. Verwalte Benutzer (aktivieren/deaktivieren, Admin-Rechte, löschen)
+4. Teste Emails über Email-Test
 
-- Deinen Namen ändern
-- Dein Passwort ändern
-- 2FA aktivieren/deaktivieren
+## Dokumentation
 
-### 4. Admin-Panel
+- **[Backend Dokumentation](backend/BACKEND.md)** - FastAPI, Datenbank, API-Endpunkte
+- **[Frontend Dokumentation](frontend/FRONTEND.md)** - SvelteKit, Routing, Deployment
+- **[FAQ](FAQ.md)** - Häufig gestellte Fragen
 
-Als Admin hast du Zugriff auf:
+## Projektstruktur
 
-- Liste aller Benutzer
-- Benutzer aktivieren/deaktivieren
-- Admin-Rechte vergeben/entziehen
-- Benutzer löschen
-
-### 5. Passwort zurücksetzen
-
-1. Klicke auf "Passwort vergessen?" beim Login
-2. Gib deine E-Mail-Adresse ein
-3. Du erhältst eine E-Mail mit einem Reset-Link
-4. Setze ein neues Passwort
-
-### 6. Two-Factor-Authentication (2FA)
-
-1. Gehe zu deinem Profil
-2. Klicke auf "2FA einrichten"
-3. Scanne den QR-Code mit einer Authenticator-App (z.B. Google Authenticator, Authy)
-4. Gib den Code aus der App ein, um 2FA zu aktivieren
-5. Bei jedem Login musst du nun zusätzlich den 2FA-Code eingeben
+```
+ai-user-administration/
+├── backend/                    # FastAPI Backend
+│   ├── routers/               # API Endpoints
+│   ├── models.py              # Datenbankmodelle
+│   ├── schemas.py             # API Schemas
+│   ├── security.py            # Authentifizierung
+│   ├── email_service.py       # E-Mail-Versand
+│   ├── two_factor.py          # 2FA-Logik
+│   ├── main.py                # Hauptanwendung
+│   ├── requirements.txt       # Python Dependencies
+│   └── BACKEND.md             # Backend-Dokumentation
+│
+├── frontend/                  # SvelteKit Frontend
+│   ├── src/
+│   │   ├── lib/api.js        # API Client
+│   │   └── routes/           # Seiten
+│   ├── package.json          # Node Dependencies
+│   └── FRONTEND.md           # Frontend-Dokumentation
+│
+├── README.md                  # Diese Datei
+└── FAQ.md                     # Häufig gestellte Fragen
+```
 
 ## API-Endpunkte
 
-### Authentifizierung
+Vollständige API-Dokumentation: `http://localhost:8000/docs`
+
+### Wichtigste Endpunkte:
 
 - `POST /api/auth/register` - Registrierung
 - `POST /api/auth/login` - Login
 - `POST /api/auth/logout` - Logout
-- `GET /api/auth/me` - Aktueller Benutzer
-- `POST /api/auth/password-reset-request` - Passwort-Reset anfordern
-- `POST /api/auth/password-reset-confirm` - Passwort zurücksetzen
-
-### Benutzer
-
 - `GET /api/users/profile` - Profil abrufen
 - `PUT /api/users/profile` - Profil aktualisieren
-
-### Admin
-
-- `GET /api/admin/users` - Alle Benutzer auflisten
-- `GET /api/admin/users/{user_id}` - Benutzer abrufen
-- `PATCH /api/admin/users/{user_id}` - Benutzer aktualisieren
-- `DELETE /api/admin/users/{user_id}` - Benutzer löschen
-
-### Two-Factor Authentication
-
+- `GET /api/admin/users` - Benutzer auflisten (Admin)
+- `POST /api/admin/test-email` - Test-Email senden (Admin)
 - `POST /api/2fa/setup` - 2FA einrichten
-- `POST /api/2fa/verify` - 2FA verifizieren
-- `POST /api/2fa/disable` - 2FA deaktivieren
-
-## Entwicklung
-
-### Backend Tests ausführen
-
-```bash
-cd backend
-pytest
-```
-
-### Frontend Build erstellen
-
-```bash
-cd frontend
-npm run build
-```
-
-### Datenbank-Migrationen (Optional mit Alembic)
-
-```bash
-cd backend
-alembic init alembic
-alembic revision --autogenerate -m "Initial migration"
-alembic upgrade head
-```
-
-## Produktions-Deployment
-
-### Backend
-
-1. Setze `DEBUG=False` in der Konfiguration
-2. Verwende einen Production ASGI Server (z.B. Gunicorn + Uvicorn)
-3. Nutze HTTPS
-4. Setze sichere CORS-Einstellungen
-5. Verwende einen Secret Key Manager für sensible Daten
-
-```bash
-gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app
-```
-
-### Frontend
-
-```bash
-npm run build
-```
-
-Das Build-Verzeichnis kann dann auf einem Static-Host (Vercel, Netlify, etc.) deployed werden.
-
-### Umgebungsvariablen in Produktion
-
-- Nutze keine `.env`-Dateien
-- Verwende Secret Manager (AWS Secrets Manager, Azure Key Vault, etc.)
-- Setze Environment Variables über dein Hosting-System
+- `POST /api/2fa/verify` - 2FA aktivieren
 
 ## Sicherheit
 
-### Best Practices
-
-- **Passwörter**: Werden mit bcrypt gehasht
-- **JWT Tokens**: Signiert mit HS256
-- **Session Management**: Token-basiert mit Ablaufzeit
+- **Passwörter**: Mit bcrypt gehasht
+- **JWT Tokens**: Signiert mit SECRET_KEY (HS256)
 - **2FA**: TOTP-basiert (RFC 6238)
 - **CORS**: Konfiguriert für Frontend-Domain
 - **SQL Injection**: Geschützt durch SQLAlchemy ORM
-- **E-Mail Validierung**: Pydantic EmailStr
 
-### Empfohlene Maßnahmen für Produktion
+**Siehe [FAQ.md](FAQ.md#sicherheit) für Details zum SECRET_KEY**
 
-- Rate Limiting implementieren
-- HTTPS erzwingen
-- Content Security Policy (CSP) Headers setzen
-- Regelmäßige Security Updates
-- Logging und Monitoring einrichten
-- Backup-Strategie für Datenbank
+## Häufige Fragen
 
-## Troubleshooting
+### Muss ich das Backend neu bauen bei .env-Änderungen?
 
-### Backend startet nicht
+**Nein**, nur neu starten. Siehe [FAQ.md](FAQ.md#installation--setup)
 
-**Problem**: Datenbank-Verbindungsfehler
+### Wofür ist der SECRET_KEY?
 
-```bash
-# Prüfe PostgreSQL Status
-pg_isready
-# oder
-brew services list  # macOS
+Signiert JWT-Tokens. Siehe [FAQ.md](FAQ.md#sicherheit)
 
-# Prüfe DATABASE_URL in .env
-echo $DATABASE_URL
-```
+### Wie teste ich Email-Versand?
 
-**Problem**: Import-Fehler oder bcrypt-Fehler
+Admin → Email-Test. Siehe [FAQ.md](FAQ.md#emails)
 
-```bash
-# Aktiviere Virtual Environment
-source venv/bin/activate
+**Weitere Fragen:** [FAQ.md](FAQ.md)
 
-# Entferne alte Versionen (falls vorhanden)
-pip uninstall -y bcrypt passlib
+## Deployment
 
-# Installiere Dependencies neu
-pip install -r requirements.txt
-```
+### Production Checklist
 
-### Frontend startet nicht
+- [ ] Sicheren `SECRET_KEY` generieren (32+ Zeichen)
+- [ ] PostgreSQL Managed Database nutzen
+- [ ] HTTPS aktivieren
+- [ ] Environment Variables über Secret Manager
+- [ ] Rate Limiting implementieren
+- [ ] Logging und Monitoring einrichten
+- [ ] Backup-Strategie für Datenbank
 
-**Problem**: Node Module fehlen
+**Siehe:**
+- [Backend Deployment](backend/BACKEND.md#produktions-deployment)
+- [Frontend Deployment](frontend/FRONTEND.md#deployment)
 
-```bash
-cd frontend
-rm -rf node_modules package-lock.json
-npm install
-```
+## Support
 
-**Problem**: Tailwind CSS funktioniert nicht
-
-```bash
-# Prüfe ob PostCSS und Tailwind installiert sind
-npm list tailwindcss postcss autoprefixer
-```
-
-### E-Mail wird nicht versendet
-
-**Problem**: Resend API Key ungültig
-
-1. Prüfe `RESEND_API_KEY` in der `.env`
-2. Verifiziere deine Domain bei Resend
-3. Prüfe die FROM_EMAIL - sie muss von einer verifizierten Domain sein
-
-### 2FA funktioniert nicht
-
-**Problem**: Codes werden nicht akzeptiert
-
-1. Stelle sicher, dass die Systemzeit korrekt ist (TOTP ist zeitbasiert)
-2. Nutze `valid_window=1` in der `verify_2fa_code` Funktion (bereits implementiert)
+- **Backend-Probleme**: [backend/BACKEND.md](backend/BACKEND.md#troubleshooting)
+- **Frontend-Probleme**: [frontend/FRONTEND.md](frontend/FRONTEND.md#troubleshooting)
+- **Allgemeine Fragen**: [FAQ.md](FAQ.md)
+- **Issues**: GitHub Issues erstellen
 
 ## Lizenz
 
 MIT
 
-## Support
+## Credits
 
-Bei Fragen oder Problemen öffne ein Issue im Repository.
+- **FastAPI**: https://fastapi.tiangolo.com
+- **SvelteKit**: https://kit.svelte.dev
+- **Tailwind CSS**: https://tailwindcss.com
+- **Resend**: https://resend.com
