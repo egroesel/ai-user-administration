@@ -1,16 +1,12 @@
 <script>
 	import '../app.css';
-	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { isAuthenticated, isAdmin, logout } from '$lib/api';
-
-	let authenticated = false;
-	let admin = false;
+	import { auth } from '$lib/stores/auth';
+	import { logout } from '$lib/api';
 
 	onMount(() => {
-		authenticated = isAuthenticated();
-		admin = isAdmin();
+		auth.checkAuth();
 	});
 
 	async function handleLogout() {
@@ -19,6 +15,8 @@
 			goto('/login');
 		} catch (error) {
 			console.error('Logout failed:', error);
+			auth.clear();
+			goto('/login');
 		}
 	}
 </script>
@@ -32,9 +30,9 @@
 				</div>
 
 				<div class="flex items-center space-x-4">
-					{#if authenticated}
+					{#if $auth.isAuthenticated}
 						<a href="/profile" class="text-gray-700 hover:text-blue-600">Profil</a>
-						{#if admin}
+						{#if $auth.isAdmin}
 							<a href="/admin" class="text-gray-700 hover:text-blue-600">Admin</a>
 						{/if}
 						<button on:click={handleLogout} class="text-gray-700 hover:text-blue-600">

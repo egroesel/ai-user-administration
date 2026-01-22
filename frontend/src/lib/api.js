@@ -1,3 +1,5 @@
+import { auth } from './stores/auth';
+
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export async function apiRequest(endpoint, options = {}) {
@@ -18,6 +20,10 @@ export async function apiRequest(endpoint, options = {}) {
 	});
 
 	if (!response.ok) {
+		// If unauthorized, clear auth state
+		if (response.status === 401) {
+			auth.clear();
+		}
 		const error = await response.json().catch(() => ({ detail: 'An error occurred' }));
 		throw new Error(error.detail || 'An error occurred');
 	}
@@ -47,17 +53,18 @@ export async function login(email, password, twoFactorCode = null) {
 	});
 
 	if (response.access_token) {
-		localStorage.setItem('token', response.access_token);
-		localStorage.setItem('user', JSON.stringify(response.user));
+		auth.setUser(response.user, response.access_token);
 	}
 
 	return response;
 }
 
 export async function logout() {
-	await apiRequest('/api/auth/logout', { method: 'POST' });
-	localStorage.removeItem('token');
-	localStorage.removeItem('user');
+	try {
+		await apiRequest('/api/auth/logout', { method: 'POST' });
+	} finally {
+		auth.clear();
+	}
 }
 
 export async function getCurrentUser() {
