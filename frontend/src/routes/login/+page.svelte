@@ -1,6 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { login, requestMagicLink } from '$lib/api';
+	import { t } from '$lib/stores/language';
 
 	let email = '';
 	let password = '';
@@ -18,7 +19,7 @@
 
 		try {
 			await requestMagicLink(email);
-			success = 'Ein Login-Link wurde an deine E-Mail gesendet. Bitte prüfe dein Postfach.';
+			success = $t('login.magicLinkSent');
 		} catch (err) {
 			error = err.message;
 		} finally {
@@ -56,71 +57,71 @@
 </script>
 
 <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
-	<div class="bg-white rounded-lg shadow-md p-8">
-		<h2 class="text-2xl font-bold text-gray-800 mb-6">Login</h2>
+	<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+		<h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">{$t('login.title')}</h2>
 
 		{#if error}
-			<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+			<div class="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-400 px-4 py-3 rounded mb-4">
 				{error}
 			</div>
 		{/if}
 
 		{#if success}
-			<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+			<div class="bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-400 px-4 py-3 rounded mb-4">
 				{success}
 			</div>
 		{/if}
 
 		<!-- Login Method Tabs -->
-		<div class="flex mb-6 border-b border-gray-200">
+		<div class="flex mb-6 border-b border-gray-200 dark:border-gray-600">
 			<button
 				type="button"
 				on:click={() => (loginMethod = 'magic')}
 				class="flex-1 py-2 text-center border-b-2 transition-colors {loginMethod === 'magic'
-					? 'border-blue-600 text-blue-600'
-					: 'border-transparent text-gray-500 hover:text-gray-700'}"
+					? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
+					: 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}"
 			>
-				Magic Link
+				{$t('login.magicLink')}
 			</button>
 			<button
 				type="button"
 				on:click={() => (loginMethod = 'password')}
 				class="flex-1 py-2 text-center border-b-2 transition-colors {loginMethod === 'password'
-					? 'border-blue-600 text-blue-600'
-					: 'border-transparent text-gray-500 hover:text-gray-700'}"
+					? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
+					: 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}"
 			>
-				Passwort
+				{$t('login.password')}
 			</button>
 		</div>
 
 		<form on:submit|preventDefault={handleSubmit}>
 			<div class="mb-4">
-				<label for="email" class="block text-gray-700 font-medium mb-2">E-Mail</label>
+				<label for="email" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">{$t('login.email')}</label>
 				<input
 					type="email"
 					id="email"
 					bind:value={email}
 					required
-					class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
 				/>
 			</div>
 
 			{#if loginMethod === 'password'}
 				<div class="mb-4">
-					<label for="password" class="block text-gray-700 font-medium mb-2">Passwort</label>
+					<label for="password" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">{$t('login.password')}</label>
 					<input
 						type="password"
 						id="password"
 						bind:value={password}
 						required
-						class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+						class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
 					/>
 				</div>
 
 				{#if needs2FA}
 					<div class="mb-4">
-						<label for="twoFactorCode" class="block text-gray-700 font-medium mb-2"
-							>2FA Code</label
+						<label for="twoFactorCode" class="block text-gray-700 dark:text-gray-300 font-medium mb-2"
+							>{$t('login.2faCode')}</label
 						>
 						<input
 							type="text"
@@ -128,7 +129,7 @@
 							bind:value={twoFactorCode}
 							required
 							placeholder="123456"
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
 						/>
 					</div>
 				{/if}
@@ -137,31 +138,31 @@
 			<button
 				type="submit"
 				disabled={loading}
-				class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+				class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
 			>
 				{#if loading}
-					{loginMethod === 'magic' ? 'Link wird gesendet...' : 'Anmelden...'}
+					{loginMethod === 'magic' ? $t('login.sendingLink') : $t('login.submitting')}
 				{:else}
-					{loginMethod === 'magic' ? 'Login-Link senden' : 'Anmelden'}
+					{loginMethod === 'magic' ? $t('login.sendLink') : $t('login.submit')}
 				{/if}
 			</button>
 		</form>
 
 		{#if loginMethod === 'magic'}
-			<p class="mt-4 text-sm text-gray-600 text-center">
-				Wir senden dir einen Link per E-Mail, mit dem du dich ohne Passwort anmelden kannst.
+			<p class="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">
+				{$t('login.magicLinkInfo')}
 			</p>
 		{/if}
 
 		<div class="mt-6 text-center space-y-2">
-			<p class="text-gray-600">
-				Noch kein Konto?
-				<a href="/register" class="text-blue-600 hover:underline">Registrieren</a>
+			<p class="text-gray-600 dark:text-gray-400">
+				{$t('login.noAccount')}
+				<a href="/register" class="text-blue-600 dark:text-blue-400 hover:underline">{$t('nav.register')}</a>
 			</p>
 			{#if loginMethod === 'password'}
 				<p>
-					<a href="/forgot-password" class="text-blue-600 hover:underline text-sm"
-						>Passwort vergessen?</a
+					<a href="/forgot-password" class="text-blue-600 dark:text-blue-400 hover:underline text-sm"
+						>{$t('login.forgotPassword')}</a
 					>
 				</p>
 			{/if}

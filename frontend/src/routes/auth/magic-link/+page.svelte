@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { verifyMagicLink } from '$lib/api';
+	import { t } from '$lib/stores/language';
 
 	let status = 'verifying'; // 'verifying', 'success', 'error'
 	let error = '';
@@ -12,7 +13,7 @@
 
 		if (!token) {
 			status = 'error';
-			error = 'Kein Token gefunden. Bitte fordere einen neuen Login-Link an.';
+			error = $t('magicLink.noToken');
 			return;
 		}
 
@@ -25,17 +26,17 @@
 			}, 1500);
 		} catch (err) {
 			status = 'error';
-			error = err.message || 'Der Login-Link ist ungültig oder abgelaufen.';
+			error = err.message || $t('magicLink.failed');
 		}
 	});
 </script>
 
 <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
-	<div class="bg-white rounded-lg shadow-md p-8 text-center">
+	<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
 		{#if status === 'verifying'}
 			<div class="mb-4">
 				<svg
-					class="animate-spin h-12 w-12 text-blue-600 mx-auto"
+					class="animate-spin h-12 w-12 text-blue-600 dark:text-blue-400 mx-auto"
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
@@ -55,12 +56,12 @@
 					></path>
 				</svg>
 			</div>
-			<h2 class="text-xl font-semibold text-gray-800">Login wird verifiziert...</h2>
-			<p class="text-gray-600 mt-2">Bitte warte einen Moment.</p>
+			<h2 class="text-xl font-semibold text-gray-800 dark:text-white">{$t('magicLink.verifying')}</h2>
+			<p class="text-gray-600 dark:text-gray-400 mt-2">{$t('magicLink.pleaseWait')}</p>
 		{:else if status === 'success'}
 			<div class="mb-4">
 				<svg
-					class="h-12 w-12 text-green-600 mx-auto"
+					class="h-12 w-12 text-green-600 dark:text-green-400 mx-auto"
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
@@ -74,12 +75,12 @@
 					/>
 				</svg>
 			</div>
-			<h2 class="text-xl font-semibold text-green-800">Erfolgreich eingeloggt!</h2>
-			<p class="text-gray-600 mt-2">Du wirst weitergeleitet...</p>
+			<h2 class="text-xl font-semibold text-green-800 dark:text-green-400">{$t('magicLink.success')}</h2>
+			<p class="text-gray-600 dark:text-gray-400 mt-2">{$t('magicLink.redirecting')}</p>
 		{:else}
 			<div class="mb-4">
 				<svg
-					class="h-12 w-12 text-red-600 mx-auto"
+					class="h-12 w-12 text-red-600 dark:text-red-400 mx-auto"
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
@@ -93,13 +94,13 @@
 					/>
 				</svg>
 			</div>
-			<h2 class="text-xl font-semibold text-red-800">Login fehlgeschlagen</h2>
-			<p class="text-gray-600 mt-2">{error}</p>
+			<h2 class="text-xl font-semibold text-red-800 dark:text-red-400">{$t('magicLink.failed')}</h2>
+			<p class="text-gray-600 dark:text-gray-400 mt-2">{error}</p>
 			<a
 				href="/login"
-				class="inline-block mt-6 bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700"
+				class="inline-block mt-6 bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition-colors"
 			>
-				Zurück zum Login
+				{$t('magicLink.backToLogin')}
 			</a>
 		{/if}
 	</div>

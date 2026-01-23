@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { getCurrentUser, updateProfile, setup2FA, verify2FA, disable2FA, isAuthenticated } from '$lib/api';
+	import { t } from '$lib/stores/language';
 
 	let user = null;
 	let loading = true;
@@ -39,7 +40,7 @@
 		success = '';
 
 		if (newPassword && newPassword !== confirmPassword) {
-			error = 'Passwörter stimmen nicht überein';
+			error = $t('register.passwordMismatch');
 			return;
 		}
 
@@ -50,7 +51,7 @@
 			}
 
 			user = await updateProfile(updateData);
-			success = 'Profil erfolgreich aktualisiert';
+			success = $t('profile.saved');
 			newPassword = '';
 			confirmPassword = '';
 		} catch (err) {
@@ -75,7 +76,7 @@
 		success = '';
 		try {
 			await verify2FA(twoFactorVerifyCode);
-			success = '2FA erfolgreich aktiviert';
+			success = $t('profile.2faActivated');
 			show2FASetup = false;
 			user.two_factor_enabled = true;
 			twoFactorVerifyCode = '';
@@ -89,7 +90,7 @@
 		success = '';
 		try {
 			await disable2FA(twoFactorVerifyCode);
-			success = '2FA erfolgreich deaktiviert';
+			success = $t('profile.2faDeactivated');
 			user.two_factor_enabled = false;
 			twoFactorVerifyCode = '';
 		} catch (err) {
@@ -100,174 +101,174 @@
 
 {#if loading}
 	<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-		<p class="text-center text-gray-600">Lädt...</p>
+		<p class="text-center text-gray-600 dark:text-gray-400">{$t('common.loading')}</p>
 	</div>
 {:else if user}
 	<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-		<h1 class="text-3xl font-bold text-gray-800 mb-8">Profil</h1>
+		<h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-8">{$t('profile.title')}</h1>
 
 		{#if error}
-			<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+			<div class="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-400 px-4 py-3 rounded mb-4">
 				{error}
 			</div>
 		{/if}
 
 		{#if success}
-			<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+			<div class="bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-400 px-4 py-3 rounded mb-4">
 				{success}
 			</div>
 		{/if}
 
-		<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-			<h2 class="text-xl font-semibold text-gray-800 mb-4">Account-Informationen</h2>
+		<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+			<h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">{$t('profile.accountInfo')}</h2>
 			<div class="space-y-3">
 				<div>
-					<span class="font-medium text-gray-700">E-Mail:</span>
-					<span class="text-gray-600 ml-2">{user.email}</span>
+					<span class="font-medium text-gray-700 dark:text-gray-300">{$t('profile.email')}:</span>
+					<span class="text-gray-600 dark:text-gray-400 ml-2">{user.email}</span>
 				</div>
 				<div>
-					<span class="font-medium text-gray-700">Status:</span>
+					<span class="font-medium text-gray-700 dark:text-gray-300">{$t('profile.status')}:</span>
 					{#if user.is_active}
-						<span class="ml-2 inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-sm"
-							>Aktiv</span
+						<span class="ml-2 inline-block bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-400 px-2 py-1 rounded text-sm"
+							>{$t('profile.active')}</span
 						>
 					{:else}
-						<span class="ml-2 inline-block bg-red-100 text-red-800 px-2 py-1 rounded text-sm"
-							>Inaktiv</span
+						<span class="ml-2 inline-block bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-400 px-2 py-1 rounded text-sm"
+							>{$t('profile.inactive')}</span
 						>
 					{/if}
 				</div>
 				<div>
-					<span class="font-medium text-gray-700">Rolle:</span>
+					<span class="font-medium text-gray-700 dark:text-gray-300">{$t('profile.role')}:</span>
 					{#if user.is_admin}
-						<span class="ml-2 inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm"
-							>Admin</span
+						<span class="ml-2 inline-block bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-400 px-2 py-1 rounded text-sm"
+							>{$t('profile.admin')}</span
 						>
 					{:else}
-						<span class="ml-2 inline-block bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm"
-							>Nutzer</span
+						<span class="ml-2 inline-block bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 px-2 py-1 rounded text-sm"
+							>{$t('profile.user')}</span
 						>
 					{/if}
 				</div>
 			</div>
 		</div>
 
-		<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-			<h2 class="text-xl font-semibold text-gray-800 mb-4">Profil bearbeiten</h2>
+		<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+			<h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">{$t('profile.editProfile')}</h2>
 
 			<form on:submit|preventDefault={handleUpdateProfile}>
 				<div class="mb-4">
-					<label for="fullName" class="block text-gray-700 font-medium mb-2">Name</label>
+					<label for="fullName" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">{$t('profile.fullName')}</label>
 					<input
 						type="text"
 						id="fullName"
 						bind:value={fullName}
-						class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+						class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
 					/>
 				</div>
 
 				<div class="mb-4">
-					<label for="newPassword" class="block text-gray-700 font-medium mb-2"
-						>Neues Passwort (optional)</label
+					<label for="newPassword" class="block text-gray-700 dark:text-gray-300 font-medium mb-2"
+						>{$t('profile.newPassword')}</label
 					>
 					<input
 						type="password"
 						id="newPassword"
 						bind:value={newPassword}
-						class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+						class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
 					/>
 				</div>
 
 				{#if newPassword}
 					<div class="mb-6">
-						<label for="confirmPassword" class="block text-gray-700 font-medium mb-2"
-							>Passwort bestätigen</label
+						<label for="confirmPassword" class="block text-gray-700 dark:text-gray-300 font-medium mb-2"
+							>{$t('register.confirmPassword')}</label
 						>
 						<input
 							type="password"
 							id="confirmPassword"
 							bind:value={confirmPassword}
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
 						/>
 					</div>
 				{/if}
 
 				<button
 					type="submit"
-					class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+					class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
 				>
-					Profil aktualisieren
+					{$t('profile.updateProfile')}
 				</button>
 			</form>
 		</div>
 
-		<div class="bg-white rounded-lg shadow-md p-6">
-			<h2 class="text-xl font-semibold text-gray-800 mb-4">Zwei-Faktor-Authentifizierung</h2>
+		<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+			<h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">{$t('profile.2fa')}</h2>
 
 			{#if user.two_factor_enabled}
 				<div class="mb-4">
-					<p class="text-green-600 mb-4">2FA ist aktiviert</p>
+					<p class="text-green-600 dark:text-green-400 mb-4">{$t('profile.2faEnabled')}</p>
 					<div class="mb-4">
-						<label for="disableCode" class="block text-gray-700 font-medium mb-2"
-							>Code eingeben zum Deaktivieren</label
+						<label for="disableCode" class="block text-gray-700 dark:text-gray-300 font-medium mb-2"
+							>{$t('profile.enterDisableCode')}</label
 						>
 						<input
 							type="text"
 							id="disableCode"
 							bind:value={twoFactorVerifyCode}
 							placeholder="123456"
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
 						/>
 					</div>
 					<button
 						on:click={handleDisable2FA}
-						class="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
+						class="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors"
 					>
-						2FA deaktivieren
+						{$t('profile.disable2fa')}
 					</button>
 				</div>
 			{:else}
 				{#if !show2FASetup}
-					<p class="text-gray-600 mb-4">2FA ist nicht aktiviert</p>
+					<p class="text-gray-600 dark:text-gray-400 mb-4">{$t('profile.2faDisabled')}</p>
 					<button
 						on:click={handleSetup2FA}
-						class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+						class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
 					>
-						2FA einrichten
+						{$t('profile.2faSetup')}
 					</button>
 				{:else}
 					<div class="space-y-4">
-						<p class="text-gray-700">Scanne diesen QR-Code mit deiner Authenticator-App:</p>
+						<p class="text-gray-700 dark:text-gray-300">{$t('profile.scanQRCode')}</p>
 						{#if twoFactorQRCode}
 							<img src={twoFactorQRCode} alt="QR Code" class="mx-auto" />
 						{/if}
-						<p class="text-sm text-gray-600">Oder gib diesen Code manuell ein:</p>
-						<p class="font-mono text-sm bg-gray-100 p-2 rounded">{twoFactorSecret}</p>
+						<p class="text-sm text-gray-600 dark:text-gray-400">{$t('profile.manualCode')}</p>
+						<p class="font-mono text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 rounded">{twoFactorSecret}</p>
 
 						<div class="mb-4">
-							<label for="verifyCode" class="block text-gray-700 font-medium mb-2"
-								>Bestätigungs-Code eingeben</label
+							<label for="verifyCode" class="block text-gray-700 dark:text-gray-300 font-medium mb-2"
+								>{$t('profile.enterVerifyCode')}</label
 							>
 							<input
 								type="text"
 								id="verifyCode"
 								bind:value={twoFactorVerifyCode}
 								placeholder="123456"
-								class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+								class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
 							/>
 						</div>
 
 						<button
 							on:click={handleVerify2FA}
-							class="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700"
+							class="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors"
 						>
-							2FA aktivieren
+							{$t('profile.enable2fa')}
 						</button>
 						<button
 							on:click={() => (show2FASetup = false)}
-							class="ml-2 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400"
+							class="ml-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 py-2 px-4 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
 						>
-							Abbrechen
+							{$t('common.cancel')}
 						</button>
 					</div>
 				{/if}
