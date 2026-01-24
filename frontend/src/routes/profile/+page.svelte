@@ -206,11 +206,16 @@
 					</div>
 					<div>
 						<span class="font-medium text-gray-700 dark:text-gray-300">{$t('profile.role')}:</span>
+						{#if user.is_admin}
+							<span class="ml-2 inline-block bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-2 py-1 rounded text-sm"
+								>{$t('profile.admin')}</span
+							>
+						{/if}
 						{#if user.is_starter || projects.length > 0}
 							<span class="ml-2 inline-block bg-[#06E481]/20 dark:bg-[#06E481]/20 text-[#304b50] dark:text-[#06E481] px-2 py-1 rounded text-sm"
 								>{$t('profile.starter')}</span
 							>
-						{:else}
+						{:else if !user.is_admin}
 							<span class="ml-2 inline-block bg-gray-100 dark:bg-gray-700 text-[#304b50] dark:text-gray-300 px-2 py-1 rounded text-sm"
 								>{$t('profile.supporter')}</span
 							>

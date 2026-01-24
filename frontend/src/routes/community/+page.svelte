@@ -80,9 +80,16 @@
 								<h3 class="font-semibold text-[#304b50] dark:text-white group-hover:text-[#06E481] transition-colors">
 									{starter.full_name}
 								</h3>
-								<span class="inline-block mt-1 px-2 py-0.5 bg-[#06E481]/20 text-[#304b50] dark:text-[#06E481] text-xs font-medium rounded-full">
-									{$t('profile.starter')}
-								</span>
+								<div class="flex flex-wrap gap-1 mt-1">
+									{#if starter.project_count >= 3}
+										<span class="inline-block px-2 py-0.5 bg-[#FFC21C]/20 text-[#FFC21C] text-xs font-medium rounded-full">
+											{$t('profile.serialStarter')}
+										</span>
+									{/if}
+									<span class="inline-block px-2 py-0.5 bg-[#06E481]/20 text-[#304b50] dark:text-[#06E481] text-xs font-medium rounded-full">
+										{$t('profile.starter')}
+									</span>
+								</div>
 							</div>
 						</div>
 						<div class="border-t border-gray-200 dark:border-gray-700 pt-4">
