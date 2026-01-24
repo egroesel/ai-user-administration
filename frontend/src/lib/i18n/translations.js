@@ -15,6 +15,9 @@ export const translations = {
 		'nav.logout': 'Logout',
 		'nav.login': 'Login',
 		'nav.register': 'Registrieren',
+		'nav.startProject': 'Projekt starten',
+		'nav.discover': 'Entdecken',
+		'nav.community': 'Community',
 
 		// Login
 		'login.title': 'Login',
@@ -43,6 +46,7 @@ export const translations = {
 		'register.success': 'Registrierung erfolgreich! Du kannst dich jetzt anmelden.',
 		'register.passwordMismatch': 'Passwörter stimmen nicht überein',
 		'register.passwordTooShort': 'Passwort muss mindestens 8 Zeichen lang sein',
+		'register.fullNameRequired': 'Der vollständige Name ist erforderlich',
 
 		// Profile
 		'profile.title': 'Profil',
@@ -70,8 +74,8 @@ export const translations = {
 		'profile.role': 'Rolle',
 		'profile.active': 'Aktiv',
 		'profile.inactive': 'Inaktiv',
-		'profile.user': 'Nutzer',
-		'profile.admin': 'Admin',
+		'profile.starter': 'Starter:in',
+		'profile.supporter': 'Supporter:in',
 		'profile.2faSetup': '2FA einrichten',
 		'profile.2faActivated': '2FA erfolgreich aktiviert',
 		'profile.2faDeactivated': '2FA erfolgreich deaktiviert',
@@ -139,6 +143,8 @@ export const translations = {
 			'Benachrichtigung, wenn ein Account deaktiviert wurde',
 		'admin.filterByStatus': 'Nach Status filtern',
 		'admin.allStatuses': 'Alle Status',
+		'admin.filterByType': 'Nach Typ filtern',
+		'admin.allTypes': 'Alle Typen',
 		'admin.noProjects': 'Keine Projekte vorhanden',
 		'admin.projectStatusUpdated': 'Projektstatus aktualisiert',
 		'admin.confirmDeleteProject': 'Möchten Sie das Projekt "{title}" wirklich löschen?',
@@ -196,6 +202,33 @@ export const translations = {
 		'home.noProjects': 'Noch keine Projekte vorhanden',
 		'home.viewAll': 'Alle Projekte ansehen',
 
+		// Discover
+		'discover.title': 'Projekte entdecken',
+		'discover.featured': 'Vorgestellte Projekte',
+		'discover.featuredBadge': 'Vorgestellt',
+		'discover.noFeatured': 'Aktuell keine vorgestellten Projekte',
+		'discover.nearGoal': 'Auf der Zielgeraden',
+		'discover.noNearGoal': 'Aktuell keine Projekte auf der Zielgeraden',
+		'discover.successfulStarters': 'Erfolgreiche Projektstarter',
+		'discover.noStarters': 'Noch keine erfolgreichen Projektstarter',
+		'discover.anonymous': 'Anonym',
+		'discover.project': 'Projekt',
+		'discover.projects': 'Projekte',
+		'discover.scrollHint': 'Scrollen oder Pfeiltasten zum Navigieren',
+
+		// Public Profile
+		'publicProfile.memberSince': 'Mitglied seit',
+		'publicProfile.projectStarter': 'Starter:in',
+		'publicProfile.projects': 'Projekte',
+		'publicProfile.noProjects': 'Dieser Nutzer hat noch keine öffentlichen Projekte',
+
+		// Community
+		'community.title': 'Community',
+		'community.subtitle': 'Alle Starter:innen auf einen Blick',
+		'community.noStarters': 'Noch keine Starter:innen vorhanden',
+		'community.projectCount': '{count} Projekt | {count} Projekte',
+		'community.totalRaised': 'Gesammelt',
+
 		// Projects
 		'project.create': 'Projekt erstellen',
 		'project.title': 'Titel',
@@ -228,10 +261,12 @@ export const translations = {
 		'project.deleted': 'Projekt gelöscht',
 		'project.notFound': 'Projekt nicht gefunden',
 		'project.back': 'Zurück',
+		'project.viewProject': 'Projekt ansehen',
 		'project.edit': 'Bearbeiten',
 		'project.by': 'von',
 		'project.funded': 'finanziert',
 		'project.goal': 'Ziel',
+		'project.support': 'Unterstützen',
 		'project.supporters': 'Unterstützer',
 		'project.daysLeft': 'Tage verbleibend',
 		'project.status.draft': 'Entwurf',
@@ -241,6 +276,12 @@ export const translations = {
 		'project.status.ended_success': 'Erfolgreich finanziert',
 		'project.status.ended_failed': 'Nicht finanziert',
 		'project.status.rejected': 'Abgelehnt',
+
+		// Project types
+		'project.type': 'Projekttyp',
+		'project.type.crowdfunding': 'Crowdfunding',
+		'project.type.fundraising': 'Fundraising',
+		'project.type.private': 'Privat',
 		'project.funding': 'Finanzierung',
 		'project.myProjects': 'Meine Projekte',
 		'project.noProjects': 'Du hast noch keine Projekte erstellt',
@@ -270,6 +311,9 @@ export const translations = {
 		'nav.logout': 'Logout',
 		'nav.login': 'Login',
 		'nav.register': 'Register',
+		'nav.startProject': 'Start a Project',
+		'nav.discover': 'Discover',
+		'nav.community': 'Community',
 
 		// Login
 		'login.title': 'Login',
@@ -296,6 +340,7 @@ export const translations = {
 		'register.success': 'Registration successful! You can now sign in.',
 		'register.passwordMismatch': 'Passwords do not match',
 		'register.passwordTooShort': 'Password must be at least 8 characters',
+		'register.fullNameRequired': 'Full name is required',
 
 		// Profile
 		'profile.title': 'Profile',
@@ -323,8 +368,8 @@ export const translations = {
 		'profile.role': 'Role',
 		'profile.active': 'Active',
 		'profile.inactive': 'Inactive',
-		'profile.user': 'User',
-		'profile.admin': 'Admin',
+		'profile.starter': 'Starter',
+		'profile.supporter': 'Supporter',
 		'profile.2faSetup': 'Set up 2FA',
 		'profile.2faActivated': '2FA successfully activated',
 		'profile.2faDeactivated': '2FA successfully deactivated',
@@ -389,6 +434,8 @@ export const translations = {
 		'admin.emailType.accountDeactivatedDesc': 'Notification when an account is deactivated',
 		'admin.filterByStatus': 'Filter by status',
 		'admin.allStatuses': 'All statuses',
+		'admin.filterByType': 'Filter by type',
+		'admin.allTypes': 'All types',
 		'admin.noProjects': 'No projects found',
 		'admin.projectStatusUpdated': 'Project status updated',
 		'admin.confirmDeleteProject': 'Do you really want to delete the project "{title}"?',
@@ -446,6 +493,33 @@ export const translations = {
 		'home.noProjects': 'No projects yet',
 		'home.viewAll': 'View all projects',
 
+		// Discover
+		'discover.title': 'Discover Projects',
+		'discover.featured': 'Featured Projects',
+		'discover.featuredBadge': 'Featured',
+		'discover.noFeatured': 'No featured projects at the moment',
+		'discover.nearGoal': 'Almost There',
+		'discover.noNearGoal': 'No projects close to their goal at the moment',
+		'discover.successfulStarters': 'Successful Project Starters',
+		'discover.noStarters': 'No successful project starters yet',
+		'discover.anonymous': 'Anonymous',
+		'discover.project': 'Project',
+		'discover.projects': 'Projects',
+		'discover.scrollHint': 'Scroll or use arrow keys to navigate',
+
+		// Public Profile
+		'publicProfile.memberSince': 'Member since',
+		'publicProfile.projectStarter': 'Starter',
+		'publicProfile.projects': 'Projects',
+		'publicProfile.noProjects': 'This user has no public projects yet',
+
+		// Community
+		'community.title': 'Community',
+		'community.subtitle': 'All starters at a glance',
+		'community.noStarters': 'No starters yet',
+		'community.projectCount': '{count} project | {count} projects',
+		'community.totalRaised': 'Raised',
+
 		// Projects
 		'project.create': 'Create Project',
 		'project.title': 'Title',
@@ -478,10 +552,12 @@ export const translations = {
 		'project.deleted': 'Project deleted',
 		'project.notFound': 'Project not found',
 		'project.back': 'Back',
+		'project.viewProject': 'View Project',
 		'project.edit': 'Edit',
 		'project.by': 'by',
 		'project.funded': 'funded',
 		'project.goal': 'Goal',
+		'project.support': 'Support',
 		'project.supporters': 'Supporters',
 		'project.daysLeft': 'days left',
 		'project.status.draft': 'Draft',
@@ -491,6 +567,12 @@ export const translations = {
 		'project.status.ended_success': 'Successfully Funded',
 		'project.status.ended_failed': 'Not Funded',
 		'project.status.rejected': 'Rejected',
+
+		// Project types
+		'project.type': 'Project Type',
+		'project.type.crowdfunding': 'Crowdfunding',
+		'project.type.fundraising': 'Fundraising',
+		'project.type.private': 'Private',
 		'project.funding': 'Funding',
 		'project.myProjects': 'My Projects',
 		'project.noProjects': "You haven't created any projects yet",

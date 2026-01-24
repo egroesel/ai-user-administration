@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func
 from database import get_db
 import models
@@ -77,6 +77,7 @@ def create_project(
         funding_goal=project.funding_goal,
         image_url=project.image_url,
         video_url=project.video_url,
+        project_type=project.project_type,
         status="draft"
     )
     db.add(db_project)
@@ -99,7 +100,9 @@ def list_projects(
     db: Session = Depends(get_db)
 ):
     """List all public projects (verified, financing, ended_success, ended_failed)."""
-    query = db.query(models.Project).filter(
+    query = db.query(models.Project).options(
+        joinedload(models.Project.owner)
+    ).filter(
         models.Project.status.in_(["verified", "financing", "ended_success", "ended_failed"])
     )
 
@@ -107,6 +110,42 @@ def list_projects(
         query = query.filter(models.Project.status == status)
 
     projects = query.order_by(models.Project.created_at.desc()).offset(skip).limit(limit).all()
+    return projects
+
+
+@router.get("/featured", response_model=List[schemas.ProjectListResponse])
+def list_featured_projects(
+    limit: int = Query(4, ge=1, le=20),
+    db: Session = Depends(get_db)
+):
+    """Get featured projects (financing projects, ordered by funding progress)."""
+    projects = db.query(models.Project).options(
+        joinedload(models.Project.owner)
+    ).filter(
+        models.Project.status == "financing"
+    ).order_by(
+        models.Project.funding_current.desc()
+    ).limit(limit).all()
+    return projects
+
+
+@router.get("/near-goal", response_model=List[schemas.ProjectListResponse])
+def list_near_goal_projects(
+    min_percentage: int = Query(80, ge=0, le=100),
+    limit: int = Query(10, ge=1, le=20),
+    db: Session = Depends(get_db)
+):
+    """Get projects that are near their funding goal (default 80%+)."""
+    # Get financing projects where funding_current >= min_percentage% of funding_goal
+    projects = db.query(models.Project).options(
+        joinedload(models.Project.owner)
+    ).filter(
+        models.Project.status == "financing",
+        models.Project.funding_goal > 0,
+        models.Project.funding_current >= models.Project.funding_goal * (min_percentage / 100)
+    ).order_by(
+        (models.Project.funding_current / models.Project.funding_goal).desc()
+    ).limit(limit).all()
     return projects
 
 
@@ -191,14 +230,21 @@ def update_project(
 
     update_data = project_update.model_dump(exclude_unset=True)
 
-    # If slug is being updated, ensure it's unique
-    if "slug" in update_data and update_data["slug"] != project.slug:
-        unique_slug = ensure_unique_slug(db, update_data["slug"], project.id)
-        if unique_slug != update_data["slug"]:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Slug '{update_data['slug']}' is already taken. Try '{unique_slug}' instead."
-            )
+    # If slug is being updated, slugify it first and ensure it's unique
+    if "slug" in update_data and update_data["slug"]:
+        # Slugify the input
+        slugified = generate_slug(update_data["slug"])
+        if slugified != project.slug:
+            unique_slug = ensure_unique_slug(db, slugified, project.id)
+            if unique_slug != slugified:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Slug '{slugified}' is already taken. Try '{unique_slug}' instead."
+                )
+            update_data["slug"] = slugified
+        else:
+            # No change needed
+            del update_data["slug"]
 
     for field, value in update_data.items():
         setattr(project, field, value)
@@ -319,6 +365,7 @@ def duplicate_project(
         funding_goal=project.funding_goal,
         image_url=project.image_url,
         video_url=project.video_url,
+        project_type=project.project_type,
         status="draft"
     )
     db.add(duplicate)

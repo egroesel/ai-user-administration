@@ -10,8 +10,10 @@
 	let sortBy = 'created_at';
 	let sortDir = 'desc';
 	let statusFilter = '';
+	let projectTypeFilter = '';
 
 	const statuses = ['draft', 'submitted', 'verified', 'financing', 'ended_success', 'ended_failed', 'rejected'];
+	const projectTypes = ['crowdfunding', 'fundraising', 'private'];
 
 	onMount(async () => {
 		await loadProjects();
@@ -21,7 +23,7 @@
 		loading = true;
 		error = '';
 		try {
-			projects = await adminListProjects(statusFilter || null);
+			projects = await adminListProjects(statusFilter || null, projectTypeFilter || null);
 			sortProjects();
 		} catch (err) {
 			error = err.message;
@@ -129,6 +131,19 @@
 		if (sortBy !== column) return '↕';
 		return sortDir === 'asc' ? '↑' : '↓';
 	}
+
+	function getProjectTypeColor(type) {
+		switch (type) {
+			case 'crowdfunding':
+				return 'bg-[#06E481]/20 text-[#304b50] dark:text-[#06E481]';
+			case 'fundraising':
+				return 'bg-[#FF85FF]/20 text-[#FF85FF]';
+			case 'private':
+				return 'bg-[#FFC21C]/20 text-[#FFC21C]';
+			default:
+				return 'bg-gray-100 dark:bg-gray-700 text-[#304b50] dark:text-gray-300';
+		}
+	}
 </script>
 
 <div>
@@ -147,8 +162,7 @@
 	{/if}
 
 	<!-- Filters -->
-	<div class="mb-6 flex gap-4 items-center">
-		<label class="text-gray-700 dark:text-gray-300">{$t('admin.filterByStatus')}:</label>
+	<div class="mb-6 flex flex-wrap gap-3 items-center">
 		<select
 			bind:value={statusFilter}
 			on:change={loadProjects}
@@ -159,6 +173,16 @@
 				<option value={status}>{$t(`project.status.${status}`)}</option>
 			{/each}
 		</select>
+		<select
+			bind:value={projectTypeFilter}
+			on:change={loadProjects}
+			class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#06E481] bg-white dark:bg-gray-700 text-[#304b50] dark:text-white"
+			>
+				<option value="">{$t('admin.allTypes')}</option>
+				{#each projectTypes as pType}
+					<option value={pType}>{$t(`project.type.${pType}`)}</option>
+				{/each}
+			</select>
 	</div>
 
 	{#if loading}
@@ -186,6 +210,12 @@
 								on:click={() => toggleSort('owner.email')}
 							>
 								{$t('project.owner')}
+							</th>
+							<th
+								class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+								on:click={() => toggleSort('project_type')}
+							>
+								{$t('project.type')} {getSortIcon('project_type')}
 							</th>
 							<th
 								class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
@@ -228,6 +258,11 @@
 									{#if project.owner?.full_name}
 										<div class="text-xs text-gray-500 dark:text-gray-400">{project.owner.full_name}</div>
 									{/if}
+								</td>
+								<td class="px-6 py-4 whitespace-nowrap">
+									<span class="text-xs px-2 py-1 rounded-full font-medium {getProjectTypeColor(project.project_type)}">
+										{$t(`project.type.${project.project_type || 'crowdfunding'}`)}
+									</span>
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap">
 									<select

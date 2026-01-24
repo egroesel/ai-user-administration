@@ -6,7 +6,7 @@ from typing import Optional
 # User schemas
 class UserBase(BaseModel):
     email: EmailStr
-    full_name: Optional[str] = None
+    full_name: str = Field(..., min_length=2)
 
 
 class UserCreate(UserBase):
@@ -20,6 +20,7 @@ class UserUpdate(BaseModel):
 
 class UserResponse(UserBase):
     id: int
+    profile_slug: str
     is_active: bool
     is_admin: bool
     is_starter: bool = False
@@ -102,6 +103,7 @@ class ProjectBase(BaseModel):
     funding_goal: Optional[float] = None
     image_url: Optional[str] = None
     video_url: Optional[str] = None
+    project_type: str = Field(default="crowdfunding", description="Type: crowdfunding, fundraising, private")
 
 
 class ProjectCreate(ProjectBase):
@@ -116,12 +118,14 @@ class ProjectUpdate(BaseModel):
     funding_goal: Optional[float] = None
     image_url: Optional[str] = None
     video_url: Optional[str] = None
+    project_type: Optional[str] = Field(None, description="Type: crowdfunding, fundraising, private")
 
 
 class ProjectOwner(BaseModel):
     id: int
     full_name: Optional[str] = None
     email: EmailStr
+    profile_slug: str
 
     class Config:
         from_attributes = True
@@ -150,6 +154,7 @@ class ProjectListResponse(BaseModel):
     slug: str
     short_description: Optional[str] = None
     status: str
+    project_type: str = "crowdfunding"
     funding_goal: Optional[float] = None
     funding_current: float
     image_url: Optional[str] = None
@@ -173,6 +178,7 @@ class AdminProjectUpdate(BaseModel):
     funding_goal: Optional[float] = None
     image_url: Optional[str] = None
     video_url: Optional[str] = None
+    project_type: Optional[str] = Field(None, description="Type: crowdfunding, fundraising, private")
     status: Optional[str] = Field(None, description="Status: draft, submitted, verified, financing, ended_success, ended_failed, rejected")
 
 
@@ -188,6 +194,59 @@ class AdminProjectResponse(ProjectBase):
     financing_start: Optional[datetime] = None
     financing_end: Optional[datetime] = None
     owner: Optional[ProjectOwner] = None
+
+    class Config:
+        from_attributes = True
+
+
+# Public Profile schemas
+class PublicProjectResponse(BaseModel):
+    id: int
+    title: str
+    slug: str
+    short_description: Optional[str] = None
+    status: str
+    project_type: str = "crowdfunding"
+    funding_goal: Optional[float] = None
+    funding_current: float
+    image_url: Optional[str] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class PublicProfileResponse(BaseModel):
+    id: int
+    profile_slug: str
+    full_name: str
+    is_starter: bool = False
+    created_at: datetime
+    projects: list[PublicProjectResponse] = []
+
+    class Config:
+        from_attributes = True
+
+
+class SuccessfulStarterResponse(BaseModel):
+    id: int
+    profile_slug: str
+    full_name: str
+    created_at: datetime
+    successful_projects_count: int = 0
+    total_funding_raised: float = 0
+
+    class Config:
+        from_attributes = True
+
+
+class StarterResponse(BaseModel):
+    id: int
+    profile_slug: str
+    full_name: str
+    created_at: datetime
+    project_count: int = 0
+    total_funding_raised: float = 0
 
     class Config:
         from_attributes = True

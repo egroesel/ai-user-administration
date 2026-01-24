@@ -231,10 +231,13 @@ export async function duplicateProject(slug) {
 }
 
 // Admin Project functions
-export async function adminListProjects(status = null, skip = 0, limit = 100) {
+export async function adminListProjects(status = null, projectType = null, skip = 0, limit = 100) {
 	let url = `/api/admin/projects?skip=${skip}&limit=${limit}`;
 	if (status) {
 		url += `&status=${status}`;
+	}
+	if (projectType) {
+		url += `&project_type=${projectType}`;
 	}
 	return apiRequest(url);
 }
@@ -252,4 +255,26 @@ export async function adminUpdateProject(projectId, data) {
 
 export async function adminDeleteProject(projectId) {
 	return apiRequest(`/api/admin/projects/${projectId}`, { method: 'DELETE' });
+}
+
+// Featured/Discover functions
+export async function listFeaturedProjects(limit = 4) {
+	return apiRequest(`/api/projects/featured?limit=${limit}`);
+}
+
+export async function listNearGoalProjects(minPercentage = 80, limit = 10) {
+	return apiRequest(`/api/projects/near-goal?min_percentage=${minPercentage}&limit=${limit}`);
+}
+
+// Public Profile functions
+export async function getPublicProfile(profileSlug) {
+	return apiRequest(`/api/profiles/${profileSlug}`);
+}
+
+export async function getSuccessfulStarters(limit = 4) {
+	return apiRequest(`/api/profiles/starters/successful?limit=${limit}`);
+}
+
+export async function getAllStarters(skip = 0, limit = 50) {
+	return apiRequest(`/api/profiles/starters/all?skip=${skip}&limit=${limit}`);
 }

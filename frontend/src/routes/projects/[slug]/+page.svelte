@@ -64,7 +64,8 @@
 				description: project.description || '',
 				funding_goal: project.funding_goal || '',
 				image_url: project.image_url || '',
-				video_url: project.video_url || ''
+				video_url: project.video_url || '',
+				project_type: project.project_type || 'crowdfunding'
 			};
 		}
 	}
@@ -228,6 +229,15 @@
 			case 'financing': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
 			case 'ended_success': return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400';
 			case 'ended_failed': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
+			default: return 'bg-gray-100 text-gray-800';
+		}
+	}
+
+	function getProjectTypeColor(type) {
+		switch (type) {
+			case 'crowdfunding': return 'bg-[#06E481]/20 text-[#304b50] dark:text-[#06E481]';
+			case 'fundraising': return 'bg-[#FF85FF]/20 text-[#FF85FF]';
+			case 'private': return 'bg-[#FFC21C]/20 text-[#FFC21C]';
 			default: return 'bg-gray-100 text-gray-800';
 		}
 	}
@@ -399,6 +409,9 @@
 				<!-- Status Badge and Submit Button -->
 				<div class="flex justify-between items-start mb-4">
 					<div class="flex items-center gap-3">
+						<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {getProjectTypeColor(project.project_type)}">
+							{$t(`project.type.${project.project_type || 'crowdfunding'}`)}
+						</span>
 						<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {getStatusColor(project.status)}">
 							{$t(`project.status.${project.status}`)}
 						</span>
@@ -519,10 +532,63 @@
 					{/if}
 				{/if}
 
+				<!-- Project Type (only in edit mode) -->
+				{#if editMode}
+					{#if editingField === 'project_type'}
+						<div class="mb-4">
+							<label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{$t('project.type')}</label>
+							<select
+								bind:value={editValues.project_type}
+								class="w-full px-2 py-1 border border-[#06E481] rounded-md dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-[#06E481] text-sm"
+							>
+								<option value="crowdfunding">{$t('project.type.crowdfunding')}</option>
+								<option value="fundraising">{$t('project.type.fundraising')}</option>
+								<option value="private">{$t('project.type.private')}</option>
+							</select>
+							<div class="mt-2 flex gap-2">
+								<button
+									on:click={() => saveField('project_type')}
+									disabled={saving}
+									class="px-3 py-1 text-sm bg-[#06E481] text-[#304b50] font-semibold rounded hover:bg-[#05b667] disabled:opacity-50"
+								>
+									{saving ? $t('project.saving') : $t('common.save')}
+								</button>
+								<button
+									on:click={cancelFieldEdit}
+									class="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-300 dark:hover:bg-gray-500"
+								>
+									{$t('common.cancel')}
+								</button>
+							</div>
+						</div>
+					{:else}
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
+						<!-- svelte-ignore a11y_no_static_element_interactions -->
+						<div
+							class="group flex items-center gap-2 mb-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 -mx-2 px-2 py-1 rounded"
+							on:click={() => startEditingField('project_type')}
+						>
+							<span class="text-sm text-gray-500 dark:text-gray-400">{$t('project.type')}:</span>
+							<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {getProjectTypeColor(project.project_type)}">
+								{$t(`project.type.${project.project_type || 'crowdfunding'}`)}
+							</span>
+							<svg class="h-4 w-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+							</svg>
+						</div>
+					{/if}
+				{/if}
+
 				<!-- Owner and Date -->
 				<div class="text-gray-600 dark:text-gray-400 text-sm mb-6">
 					{#if project.owner}
-						{$t('project.by')} {project.owner.full_name || project.owner.email}
+						{$t('project.by')}
+						<a
+							href="/profile/{project.owner.profile_slug}"
+							class="text-[#304b50] dark:text-[#06E481] hover:underline font-medium"
+						>
+							{project.owner.full_name || project.owner.email}
+						</a>
 					{/if}
 					<span class="mx-2">•</span>
 					{formatDate(project.created_at)}
@@ -604,6 +670,18 @@
 							</div>
 						{/if}
 					</div>
+				{/if}
+
+				<!-- Support Button -->
+				{#if project.status === 'financing'}
+					<button
+						class="w-full mb-6 py-4 px-6 font-bold text-lg rounded-lg transition-colors shadow-lg hover:shadow-xl
+							{project.project_type === 'crowdfunding' ? 'bg-[#06E481] text-[#304b50] hover:bg-[#05b667]' : ''}
+							{project.project_type === 'fundraising' ? 'bg-[#FF85FF] text-white hover:bg-[#e070e0]' : ''}
+							{project.project_type === 'private' ? 'bg-[#FFC21C] text-[#304b50] hover:bg-[#e0aa18]' : ''}"
+					>
+						{$t('project.support')}
+					</button>
 				{/if}
 
 				<!-- Short Description -->

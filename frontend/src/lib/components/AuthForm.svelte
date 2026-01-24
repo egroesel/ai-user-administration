@@ -68,6 +68,11 @@
 	async function handleRegister() {
 		clearMessages();
 
+		if (!fullName || fullName.trim().length < 2) {
+			error = $t('register.fullNameRequired');
+			return;
+		}
+
 		if (password !== confirmPassword) {
 			error = $t('register.passwordMismatch');
 			return;
@@ -81,7 +86,7 @@
 		loading = true;
 
 		try {
-			await register(email, password, fullName);
+			await register(email, password, fullName.trim());
 			dispatch('registersuccess', { email });
 		} catch (err) {
 			error = err.message;
@@ -228,12 +233,14 @@
 		<form on:submit|preventDefault={handleSubmit}>
 			<div class="mb-4">
 				<label for="fullName" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">
-					{$t('register.fullName')}
+					{$t('register.fullName')} <span class="text-red-500">*</span>
 				</label>
 				<input
 					type="text"
 					id="fullName"
 					bind:value={fullName}
+					required
+					minlength="2"
 					class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#06E481] bg-white dark:bg-gray-700 text-[#304b50] dark:text-white"
 				/>
 			</div>

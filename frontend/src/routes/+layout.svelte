@@ -14,10 +14,32 @@
 	<nav class="bg-white dark:bg-gray-800 shadow-sm">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			<div class="flex justify-between h-16">
-				<div class="flex items-center">
+				<div class="flex items-center space-x-8">
 					<a href="/" class="text-xl font-bold text-[#304b50] dark:text-white">
 						#startneu
 					</a>
+
+					<!-- Main Navigation -->
+					<div class="hidden sm:flex items-center space-x-6">
+						<a
+							href="/projects/new"
+							class="text-gray-700 dark:text-gray-300 hover:text-[#06E481] dark:hover:text-[#06E481] transition-colors font-medium"
+						>
+							{$t('nav.startProject')}
+						</a>
+						<a
+							href="/discover"
+							class="text-gray-700 dark:text-gray-300 hover:text-[#06E481] dark:hover:text-[#06E481] transition-colors font-medium"
+						>
+							{$t('nav.discover')}
+						</a>
+						<a
+							href="/community"
+							class="text-gray-700 dark:text-gray-300 hover:text-[#06E481] dark:hover:text-[#06E481] transition-colors font-medium"
+						>
+							{$t('nav.community')}
+						</a>
+					</div>
 				</div>
 
 				<div class="flex items-center space-x-4">

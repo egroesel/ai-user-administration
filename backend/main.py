@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, SessionLocal
 import models
-from routers import auth, users, admin, two_factor, projects
+from routers import auth, users, admin, two_factor, projects, profiles
 from security import get_password_hash
 from config import settings
 from migrations import run_migrations
@@ -31,6 +31,7 @@ app.include_router(users.router)
 app.include_router(admin.router)
 app.include_router(two_factor.router)
 app.include_router(projects.router)
+app.include_router(profiles.router)
 
 
 @app.on_event("startup")
@@ -43,6 +44,7 @@ def create_admin_user():
                 email=settings.ADMIN_EMAIL,
                 hashed_password=get_password_hash(settings.ADMIN_PASSWORD),
                 full_name="Admin User",
+                profile_slug="admin-user",
                 is_active=True,
                 is_admin=True
             )
@@ -50,6 +52,10 @@ def create_admin_user():
             db.commit()
             print(f"Admin user created: {settings.ADMIN_EMAIL}")
         else:
+            # Ensure existing admin has a profile_slug
+            if not admin.profile_slug:
+                admin.profile_slug = "admin-user"
+                db.commit()
             print("Admin user already exists")
     finally:
         db.close()

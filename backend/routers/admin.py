@@ -124,6 +124,7 @@ def send_test_email_endpoint(
 @router.get("/projects", response_model=List[schemas.AdminProjectResponse])
 def list_all_projects(
     status: Optional[str] = Query(None, description="Filter by status"),
+    project_type: Optional[str] = Query(None, description="Filter by project type: crowdfunding, fundraising, private"),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=500),
     current_admin: models.User = Depends(get_current_admin_user),
@@ -134,6 +135,9 @@ def list_all_projects(
 
     if status:
         query = query.filter(models.Project.status == status)
+
+    if project_type:
+        query = query.filter(models.Project.project_type == project_type)
 
     projects = query.order_by(models.Project.created_at.desc()).offset(skip).limit(limit).all()
     return projects

@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import re
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
 from database import get_db
@@ -16,6 +17,45 @@ from two_factor import verify_2fa_code
 from email_service import send_password_reset_email, send_welcome_email, send_magic_link_email
 from config import settings
 
+
+def generate_profile_slug(name: str) -> str:
+    """Generate a URL-safe slug from a name."""
+    if not name:
+        return ""
+    # Convert to lowercase
+    slug = name.lower()
+    # Replace umlauts and special chars
+    replacements = {
+        'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss',
+        'á': 'a', 'à': 'a', 'â': 'a', 'ã': 'a',
+        'é': 'e', 'è': 'e', 'ê': 'e',
+        'í': 'i', 'ì': 'i', 'î': 'i',
+        'ó': 'o', 'ò': 'o', 'ô': 'o', 'õ': 'o',
+        'ú': 'u', 'ù': 'u', 'û': 'u',
+        'ñ': 'n', 'ç': 'c'
+    }
+    for char, replacement in replacements.items():
+        slug = slug.replace(char, replacement)
+    # Replace spaces and non-alphanumeric with hyphens
+    slug = re.sub(r'[^a-z0-9]+', '-', slug)
+    # Remove leading/trailing hyphens
+    slug = slug.strip('-')
+    return slug
+
+
+def get_unique_profile_slug(db: Session, base_slug: str, exclude_user_id: int = None) -> str:
+    """Get a unique profile slug by appending numbers if necessary."""
+    slug = base_slug
+    counter = 1
+    while True:
+        query = db.query(models.User).filter(models.User.profile_slug == slug)
+        if exclude_user_id:
+            query = query.filter(models.User.id != exclude_user_id)
+        if not query.first():
+            return slug
+        slug = f"{base_slug}-{counter}"
+        counter += 1
+
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 
 
@@ -25,11 +65,18 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
+    # Generate unique profile slug from full_name
+    base_slug = generate_profile_slug(user.full_name)
+    if not base_slug:
+        raise HTTPException(status_code=400, detail="Full name is required")
+    profile_slug = get_unique_profile_slug(db, base_slug)
+
     hashed_password = get_password_hash(user.password)
     db_user = models.User(
         email=user.email,
         hashed_password=hashed_password,
         full_name=user.full_name,
+        profile_slug=profile_slug,
         is_active=True,
         is_admin=False
     )

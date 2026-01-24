@@ -16,6 +16,7 @@
 	let fundingGoal = '';
 	let imageUrl = '';
 	let videoUrl = '';
+	let projectType = 'crowdfunding';
 
 	let loading = false;
 	let error = null;
@@ -35,7 +36,8 @@
 			description,
 			fundingGoal,
 			imageUrl,
-			videoUrl
+			videoUrl,
+			projectType
 		};
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 	}
@@ -54,6 +56,7 @@
 				fundingGoal = data.fundingGoal || '';
 				imageUrl = data.imageUrl || '';
 				videoUrl = data.videoUrl || '';
+				projectType = data.projectType || 'crowdfunding';
 				return true;
 			} catch (e) {
 				console.error('Failed to load saved form data:', e);
@@ -139,7 +142,8 @@
 				description: description.trim() || null,
 				funding_goal: fundingGoal ? parseFloat(fundingGoal) : null,
 				image_url: imageUrl.trim() || null,
-				video_url: videoUrl.trim() || null
+				video_url: videoUrl.trim() || null,
+				project_type: projectType
 			};
 
 			const project = await createProject(projectData);
@@ -203,6 +207,42 @@
 		{/if}
 
 		<form on:submit|preventDefault={handleSubmit} class="space-y-6">
+			<!-- Project Type -->
+			<div>
+				<label for="projectType" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+					{$t('project.type')}
+				</label>
+				<div class="grid grid-cols-3 gap-3">
+					<button
+						type="button"
+						on:click={() => projectType = 'crowdfunding'}
+						class="px-4 py-3 rounded-lg border-2 transition-colors {projectType === 'crowdfunding' ? 'border-[#06E481] bg-[#06E481]/10' : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'}"
+					>
+						<span class="block text-sm font-medium {projectType === 'crowdfunding' ? 'text-[#06E481]' : 'text-gray-700 dark:text-gray-300'}">
+							{$t('project.type.crowdfunding')}
+						</span>
+					</button>
+					<button
+						type="button"
+						on:click={() => projectType = 'fundraising'}
+						class="px-4 py-3 rounded-lg border-2 transition-colors {projectType === 'fundraising' ? 'border-[#FF85FF] bg-[#FF85FF]/10' : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'}"
+					>
+						<span class="block text-sm font-medium {projectType === 'fundraising' ? 'text-[#FF85FF]' : 'text-gray-700 dark:text-gray-300'}">
+							{$t('project.type.fundraising')}
+						</span>
+					</button>
+					<button
+						type="button"
+						on:click={() => projectType = 'private'}
+						class="px-4 py-3 rounded-lg border-2 transition-colors {projectType === 'private' ? 'border-[#FFC21C] bg-[#FFC21C]/10' : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'}"
+					>
+						<span class="block text-sm font-medium {projectType === 'private' ? 'text-[#FFC21C]' : 'text-gray-700 dark:text-gray-300'}">
+							{$t('project.type.private')}
+						</span>
+					</button>
+				</div>
+			</div>
+
 			<!-- Title -->
 			<div>
 				<label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -325,7 +365,10 @@
 				<button
 					type="submit"
 					disabled={loading}
-					class="w-full px-4 py-3 bg-[#06E481] text-[#304b50] font-semibold font-medium rounded-md hover:bg-[#05b667] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#06E481] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+					class="w-full px-4 py-3 font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors
+						{projectType === 'crowdfunding' ? 'bg-[#06E481] text-[#304b50] hover:bg-[#05b667] focus:ring-[#06E481]' : ''}
+						{projectType === 'fundraising' ? 'bg-[#FF85FF] text-white hover:bg-[#e070e0] focus:ring-[#FF85FF]' : ''}
+						{projectType === 'private' ? 'bg-[#FFC21C] text-[#304b50] hover:bg-[#e0aa18] focus:ring-[#FFC21C]' : ''}"
 				>
 					{loading ? $t('project.creating') : $t('project.create')}
 				</button>
