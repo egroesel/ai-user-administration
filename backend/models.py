@@ -56,12 +56,18 @@ class Project(Base):
     # Project type: crowdfunding, fundraising, private
     project_type = Column(String(50), default="crowdfunding")
 
+    # Plan and provision
+    plan = Column(String(50), nullable=True)  # basic, pro, premium, enterprise
+    provision = Column(Numeric(5, 2), nullable=True)  # percentage, e.g. 7.00 for 7%
+    voucher_code = Column(String(50), nullable=True)
+
     # Dates
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     submitted_at = Column(DateTime(timezone=True), nullable=True)
     verified_at = Column(DateTime(timezone=True), nullable=True)
-    financing_start = Column(DateTime(timezone=True), nullable=True)
+    start_date = Column(DateTime(timezone=True), nullable=True)  # Planned start date (user input)
+    financing_start = Column(DateTime(timezone=True), nullable=True)  # Actual financing start
     financing_end = Column(DateTime(timezone=True), nullable=True)
 
     # Media

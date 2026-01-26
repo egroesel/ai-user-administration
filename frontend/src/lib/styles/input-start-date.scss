@@ -1,0 +1,91 @@
+// BEM: input-start-date - Date picker input component
+@use 'variables' as *;
+
+.input-start-date {
+    display: flex;
+    justify-content: flex-end;
+
+    &__native-date-input {
+        font-size: 37.5px;
+        font-weight: 700;
+        border: none;
+        color: $color-text;
+        letter-spacing: -0.5px;
+        cursor: pointer;
+        background: transparent !important;
+        text-align: right;
+
+        &:focus {
+            outline: none;
+        }
+
+        // Remove the icon in Chrome, Edge, Safari
+        &::-webkit-calendar-picker-indicator {
+            opacity: 0;
+            display: none;
+        }
+
+        // No Button Symbols
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            display: none;
+        }
+
+        // Apply the same color to all datetime edit fields
+        &::-webkit-datetime-edit-day-field,
+        &::-webkit-datetime-edit-month-field,
+        &::-webkit-datetime-edit-year-field,
+        &::-webkit-datetime-edit-hour-field,
+        &::-webkit-datetime-edit-minute-field {
+            color: $color-text;
+            background: none;
+        }
+    }
+}
+
+// Firefox workaround - hide calendar icon
+@-moz-document url-prefix() {
+    .input-start-date {
+        position: relative;
+        left: 20px;
+
+        &__native-date-input {
+            width: 346px;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40px;
+            height: 100%;
+            background: #fff;
+            pointer-events: none;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .input-start-date {
+            left: 40px;
+        }
+    }
+}
+
+// Dark mode support
+.dark .input-start-date__native-date-input {
+    color: $color-gray-50;
+
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-year-field,
+    &::-webkit-datetime-edit-hour-field,
+    &::-webkit-datetime-edit-minute-field {
+        color: $color-gray-50;
+        background: none;
+    }
+}
+
+.dark .input-start-date::after {
+    background: $color-gray-800;
+}

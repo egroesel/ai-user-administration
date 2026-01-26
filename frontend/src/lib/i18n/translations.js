@@ -302,7 +302,33 @@ export const translations = {
 		'project.endFailed': 'Als gescheitert beenden',
 		'project.editModeOn': 'Bearbeiten',
 		'project.editModeOff': 'Fertig',
-		'project.notSet': 'Nicht gesetzt'
+		'project.notSet': 'Nicht gesetzt',
+
+		// Pricing / Plan Selection
+		'pricing.selectType': 'Wähle deinen Projekttyp',
+		'pricing.selectFunding': 'Wie viel möchtest du einsammeln?',
+		'pricing.selectPlan': 'Wähle deinen Plan',
+		'pricing.recommended': 'Empfohlen',
+		'pricing.provision': 'Provision',
+		'pricing.ongoingCost': 'Laufende Kosten',
+		'pricing.onDemand': 'Auf Anfrage',
+		'pricing.showMore': 'Mehr anzeigen',
+		'pricing.showLess': 'Weniger anzeigen',
+		'pricing.features': 'Funktionen',
+		'pricing.futureFeatures': 'Demnächst verfügbar',
+		'pricing.paymentMethods': 'Zahlungsarten',
+		'pricing.support': 'Support',
+		'pricing.voucherTitle': 'Hast du einen Gutschein?',
+		'pricing.voucherPlaceholder': 'Gutscheincode eingeben',
+		'pricing.voucherApply': 'Einlösen',
+		'pricing.voucherApplied': 'Gutschein angewendet',
+		'pricing.voucherInvalid': 'Ungültiger Gutscheincode',
+		'pricing.discountApplied': 'Rabatt angewendet',
+		'pricing.continueButton': 'Weiter zum Projekt',
+		'pricing.backButton': 'Zurück',
+		'pricing.changePlan': 'Plan ändern',
+		'pricing.selectedPlan': 'Ausgewählter Plan',
+		'pricing.selectPlanFirst': 'Wähle zuerst einen Plan für dein Projekt'
 	},
 
 	en: {
@@ -595,6 +621,32 @@ export const translations = {
 		'project.endFailed': 'End as Failed',
 		'project.editModeOn': 'Edit',
 		'project.editModeOff': 'Done',
-		'project.notSet': 'Not set'
+		'project.notSet': 'Not set',
+
+		// Pricing / Plan Selection
+		'pricing.selectType': 'Choose your project type',
+		'pricing.selectFunding': 'How much do you want to raise?',
+		'pricing.selectPlan': 'Choose your plan',
+		'pricing.recommended': 'Recommended',
+		'pricing.provision': 'Commission',
+		'pricing.ongoingCost': 'Ongoing costs',
+		'pricing.onDemand': 'On demand',
+		'pricing.showMore': 'Show more',
+		'pricing.showLess': 'Show less',
+		'pricing.features': 'Features',
+		'pricing.futureFeatures': 'Coming soon',
+		'pricing.paymentMethods': 'Payment methods',
+		'pricing.support': 'Support',
+		'pricing.voucherTitle': 'Have a voucher?',
+		'pricing.voucherPlaceholder': 'Enter voucher code',
+		'pricing.voucherApply': 'Apply',
+		'pricing.voucherApplied': 'Voucher applied',
+		'pricing.voucherInvalid': 'Invalid voucher code',
+		'pricing.discountApplied': 'Discount applied',
+		'pricing.continueButton': 'Continue to project',
+		'pricing.backButton': 'Back',
+		'pricing.changePlan': 'Change plan',
+		'pricing.selectedPlan': 'Selected plan',
+		'pricing.selectPlanFirst': 'Select a plan for your project first'
 	}
 };

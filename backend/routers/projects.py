@@ -78,6 +78,10 @@ def create_project(
         image_url=project.image_url,
         video_url=project.video_url,
         project_type=project.project_type,
+        plan=project.plan,
+        provision=project.provision,
+        voucher_code=project.voucher_code,
+        start_date=project.start_date,
         status="draft"
     )
     db.add(db_project)
@@ -355,7 +359,7 @@ def duplicate_project(
     base_slug = f"{project.slug}-copy"
     unique_slug = ensure_unique_slug(db, base_slug)
 
-    # Create duplicate project
+    # Create duplicate project (start_date not copied - new project gets new date)
     duplicate = models.Project(
         owner_id=current_user.id,
         title=f"{project.title} (Copy)",
@@ -366,6 +370,9 @@ def duplicate_project(
         image_url=project.image_url,
         video_url=project.video_url,
         project_type=project.project_type,
+        plan=project.plan,
+        provision=project.provision,
+        voucher_code=project.voucher_code,
         status="draft"
     )
     db.add(duplicate)

@@ -175,6 +175,12 @@
 							</th>
 							<th
 								class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+								on:click={() => toggleSort('plan')}
+							>
+								Plan {getSortIconForColumn('plan')}
+							</th>
+							<th
+								class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
 								on:click={() => toggleSort('status')}
 							>
 								{$t('admin.status')} {getSortIconForColumn('status')}
@@ -217,6 +223,16 @@
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap">
 									<Badge type="projectType" value={project.project_type || 'crowdfunding'} />
+								</td>
+								<td class="px-6 py-4 whitespace-nowrap text-sm">
+									{#if project.plan}
+										<div class="font-medium text-[#304b50] dark:text-white capitalize">{project.plan}</div>
+										{#if project.provision}
+											<div class="text-xs text-gray-500 dark:text-gray-400">{project.provision.toFixed(2).replace('.', ',')}%</div>
+										{/if}
+									{:else}
+										<span class="text-gray-400">-</span>
+									{/if}
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap">
 									<select

@@ -1,0 +1,173 @@
+// BEM: plan-card - Additional styles for PlanCard component
+@use 'variables' as *;
+
+// Typography helpers
+.sn-text-xxlarge {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $color-text;
+    margin-bottom: -0.25rem;
+}
+
+.sn-text-xxxlarge {
+    font-size: 1.75rem;
+}
+
+.sn-text-xlarge {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: $color-text;
+}
+
+.sn-text-semibold {
+    font-weight: 600;
+    color: $color-text;
+}
+
+// Dark mode typography
+.dark .sn-text-xxlarge,
+.dark .sn-text-xlarge,
+.dark .sn-text-semibold {
+    color: $color-gray-50;
+}
+
+// Feature items
+.feature-item {
+    display: flex;
+    margin-bottom: 0.25rem;
+    position: relative;
+    font-size: 0.875rem;
+    color: $color-gray-500;
+
+    span {
+        flex: 1;
+    }
+}
+
+.dark .feature-item {
+    color: $color-gray-400;
+}
+
+// Icon colors
+.icon--crowdfunding {
+    color: $color-crowdfunding;
+}
+
+.icon--fundraising {
+    color: $color-fundraising;
+}
+
+.icon--private {
+    color: $color-private;
+}
+
+// Provision styles
+.provision-strikethrough {
+    text-decoration: line-through;
+    color: $color-gray-400;
+    font-size: 0.875rem;
+    margin-right: 0.25rem;
+}
+
+.provision-discounted {
+    color: $color-crowdfunding;
+}
+
+// CTA Buttons
+.cta-btn {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+
+    &--outline {
+        background: transparent;
+        border: 2px solid;
+    }
+
+    &--filled {
+        border: 2px solid transparent;
+        color: $color-gray-800;
+    }
+
+    &--disabled {
+        background-color: $color-gray-100;
+        color: $color-gray-400;
+        cursor: not-allowed;
+        border: none;
+    }
+}
+
+.dark .cta-btn--disabled {
+    background-color: $color-gray-700;
+}
+
+// Color variants for CTA - Crowdfunding
+.cta-btn--crowdfunding {
+    &.cta-btn--outline {
+        border-color: $color-crowdfunding;
+        color: $color-crowdfunding;
+
+        &:hover {
+            background-color: rgba($color-crowdfunding, 0.1);
+        }
+    }
+
+    &.cta-btn--filled {
+        background-color: $color-crowdfunding;
+
+        &:hover {
+            background-color: darken($color-crowdfunding, 10%);
+        }
+    }
+}
+
+// Color variants for CTA - Fundraising
+.cta-btn--fundraising {
+    &.cta-btn--outline {
+        border-color: $color-fundraising;
+        color: $color-fundraising;
+
+        &:hover {
+            background-color: rgba($color-fundraising, 0.1);
+        }
+    }
+
+    &.cta-btn--filled {
+        background-color: $color-fundraising;
+
+        &:hover {
+            background-color: darken($color-fundraising, 10%);
+        }
+    }
+}
+
+// Color variants for CTA - Private
+.cta-btn--private {
+    &.cta-btn--outline {
+        border-color: $color-private;
+        color: $color-private;
+
+        &:hover {
+            background-color: rgba($color-private, 0.1);
+        }
+    }
+
+    &.cta-btn--filled {
+        background-color: $color-private;
+
+        &:hover {
+            background-color: darken($color-private, 10%);
+        }
+    }
+}
+
+// Utility classes
+.mr-2 {
+    margin-right: 0.5rem;
+}

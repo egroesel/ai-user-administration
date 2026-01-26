@@ -1,0 +1,88 @@
+// BEM: funding-target - Editable funding target input component
+@use 'variables' as *;
+
+.funding-target {
+    font-size: 52px;
+    font-weight: 700;
+    display: flex;
+    justify-content: flex-end;
+    width: 288px;
+    line-height: 1;
+
+    &__amount {
+        position: relative;
+        text-align: right;
+    }
+
+    &__number,
+    &__bg {
+        border: none;
+        padding: 0;
+        font-weight: 700;
+        letter-spacing: normal;
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum";
+    }
+
+    &__number {
+        z-index: 2;
+        width: 100%;
+        position: relative;
+        color: $color-text;
+        background-color: transparent;
+        display: inline-block;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+        outline: none;
+        cursor: text;
+        caret-color: $color-text;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 0;
+            right: -5px;
+            bottom: -5px;
+            background-color: $color-gray-50;
+            z-index: -1;
+        }
+
+        &:empty::after {
+            content: '0';
+        }
+    }
+
+    &__bg {
+        color: $color-gray-200;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 1;
+        user-select: none;
+        width: auto;
+    }
+
+    &__currency {
+        font-weight: 700;
+        color: $color-text;
+    }
+}
+
+// Dark mode support
+.dark .funding-target__number {
+    color: $color-gray-50;
+    caret-color: $color-gray-50;
+
+    &::before {
+        background-color: $color-gray-900;
+    }
+}
+
+.dark .funding-target__bg {
+    color: $color-gray-700;
+}
+
+.dark .funding-target__currency {
+    color: $color-gray-50;
+}

@@ -115,6 +115,10 @@ class ProjectBase(BaseModel):
     image_url: Optional[str] = None
     video_url: Optional[str] = None
     project_type: str = Field(default="crowdfunding", description="Type: crowdfunding, fundraising, private")
+    plan: Optional[str] = Field(None, description="Plan: basic, pro, premium, enterprise")
+    provision: Optional[float] = Field(None, description="Commission percentage")
+    voucher_code: Optional[str] = Field(None, max_length=50)
+    start_date: Optional[datetime] = Field(None, description="Planned start date")
 
 
 class ProjectCreate(ProjectBase):
@@ -130,6 +134,10 @@ class ProjectUpdate(BaseModel):
     image_url: Optional[str] = None
     video_url: Optional[str] = None
     project_type: Optional[str] = Field(None, description="Type: crowdfunding, fundraising, private")
+    plan: Optional[str] = Field(None, description="Plan: basic, pro, premium, enterprise")
+    provision: Optional[float] = Field(None, description="Commission percentage")
+    voucher_code: Optional[str] = Field(None, max_length=50)
+    start_date: Optional[datetime] = Field(None, description="Planned start date")
 
 
 class ProjectOwner(BaseModel):
@@ -151,6 +159,7 @@ class ProjectResponse(ProjectBase):
     updated_at: Optional[datetime] = None
     submitted_at: Optional[datetime] = None
     verified_at: Optional[datetime] = None
+    start_date: Optional[datetime] = None
     financing_start: Optional[datetime] = None
     financing_end: Optional[datetime] = None
     owner: Optional[ProjectOwner] = None
@@ -166,6 +175,8 @@ class ProjectListResponse(BaseModel):
     short_description: Optional[str] = None
     status: str
     project_type: str = "crowdfunding"
+    plan: Optional[str] = None
+    provision: Optional[float] = None
     funding_goal: Optional[float] = None
     funding_current: float
     image_url: Optional[str] = None
@@ -190,6 +201,10 @@ class AdminProjectUpdate(BaseModel):
     image_url: Optional[str] = None
     video_url: Optional[str] = None
     project_type: Optional[str] = Field(None, description="Type: crowdfunding, fundraising, private")
+    plan: Optional[str] = Field(None, description="Plan: basic, pro, premium, enterprise")
+    provision: Optional[float] = Field(None, description="Commission percentage")
+    voucher_code: Optional[str] = Field(None, max_length=50)
+    start_date: Optional[datetime] = Field(None, description="Planned start date")
     status: Optional[str] = Field(None, description="Status: draft, submitted, verified, financing, ended_success, ended_failed, rejected")
 
 
@@ -202,6 +217,7 @@ class AdminProjectResponse(ProjectBase):
     updated_at: Optional[datetime] = None
     submitted_at: Optional[datetime] = None
     verified_at: Optional[datetime] = None
+    start_date: Optional[datetime] = None
     financing_start: Optional[datetime] = None
     financing_end: Optional[datetime] = None
     owner: Optional[ProjectOwner] = None

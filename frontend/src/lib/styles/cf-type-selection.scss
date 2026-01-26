@@ -1,0 +1,178 @@
+// BEM: cf-type-selection - Type selection cards (crowdfunding/fundraising/private)
+@use 'variables' as *;
+
+.cf-type-selection {
+    border: 2px solid $color-gray-200;
+    border-radius: 20px;
+    height: 100%;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    background-color: #fff;
+    text-align: left;
+
+    // Checkmark tick - centered in circle
+    &__card-tick {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    // Title header
+    &__title {
+        background: linear-gradient(135deg, $color-gray-100 0%, $color-gray-200 100%);
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        min-height: 64px;
+
+        // Circle for checkmark - centered vertically
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid $color-gray-200;
+        }
+    }
+
+    // Color variants for checkmark circle border
+    &--crowdfunding &__title::after {
+        border-color: $color-crowdfunding;
+    }
+
+    &--fundraising &__title::after {
+        border-color: $color-fundraising;
+    }
+
+    &--private &__title::after {
+        border-color: $color-private;
+    }
+
+    // Body section
+    &__body {
+        height: calc(100% - 64px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    // Subtitle
+    &__subtitle {
+        padding: 0.75rem 1rem 0;
+        margin-bottom: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        flex-grow: 1;
+        color: $color-text;
+    }
+
+    // Description
+    &__desc {
+        padding: 0 1rem 1rem;
+        font-size: 0.875rem;
+        color: $color-gray-500;
+    }
+
+    // Selected state - base
+    &--selected {
+        cursor: auto;
+    }
+}
+
+// Selected state with colors (outside nesting to avoid SCSS issues)
+.cf-type-selection--selected.cf-type-selection--crowdfunding {
+    border-color: $color-crowdfunding;
+
+    .cf-type-selection__title {
+        background: $color-crowdfunding;
+    }
+}
+
+.cf-type-selection--selected.cf-type-selection--fundraising {
+    border-color: $color-fundraising;
+
+    .cf-type-selection__title {
+        background: $color-fundraising;
+    }
+}
+
+.cf-type-selection--selected.cf-type-selection--private {
+    border-color: $color-private;
+
+    .cf-type-selection__title {
+        background: $color-private;
+    }
+}
+
+// Dark mode support
+.dark .cf-type-selection {
+    border-color: $color-gray-700;
+    background-color: $color-gray-800;
+}
+
+.dark .cf-type-selection__title {
+    background: linear-gradient(135deg, $color-gray-700 0%, $color-gray-800 100%);
+}
+
+.dark .cf-type-selection__title::after {
+    background: $color-gray-800;
+    border-color: $color-gray-600;
+}
+
+// Keep colored border on circle in dark mode
+.dark .cf-type-selection--crowdfunding .cf-type-selection__title::after {
+    border-color: $color-crowdfunding;
+}
+
+.dark .cf-type-selection--fundraising .cf-type-selection__title::after {
+    border-color: $color-fundraising;
+}
+
+.dark .cf-type-selection--private .cf-type-selection__title::after {
+    border-color: $color-private;
+}
+
+.dark .cf-type-selection__subtitle {
+    color: $color-gray-50;
+}
+
+.dark .cf-type-selection__desc {
+    color: $color-gray-400;
+}
+
+// Keep selected colors in dark mode
+.dark .cf-type-selection--selected.cf-type-selection--crowdfunding,
+.dark .cf-type-selection--selected.cf-type-selection--fundraising,
+.dark .cf-type-selection--selected.cf-type-selection--private {
+    .cf-type-selection__title {
+        color: $color-gray-800;
+    }
+}
+
+// Keep selected border colors in dark mode
+.dark .cf-type-selection--selected.cf-type-selection--crowdfunding {
+    border-color: $color-crowdfunding;
+}
+
+.dark .cf-type-selection--selected.cf-type-selection--fundraising {
+    border-color: $color-fundraising;
+}
+
+.dark .cf-type-selection--selected.cf-type-selection--private {
+    border-color: $color-private;
+}
