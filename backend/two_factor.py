@@ -17,7 +17,7 @@ def generate_qr_code(secret: str, email: str) -> str:
     totp = pyotp.TOTP(secret)
     provisioning_uri = totp.provisioning_uri(
         name=email,
-        issuer_name="User Management"
+        issuer_name="Startnext Prototype"
     )
 
     qr = qrcode.QRCode(version=1, box_size=10, border=5)

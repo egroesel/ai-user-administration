@@ -1,6 +1,6 @@
 # Backend Dokumentation
 
-FastAPI-basiertes Backend für die Nutzerverwaltung.
+FastAPI-basiertes Backend für den Startnext Crowdfunding-Plattform Prototypen.
 
 ## Technologie-Stack
 

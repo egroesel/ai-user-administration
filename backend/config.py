@@ -20,6 +20,10 @@ class Settings(BaseSettings):
     # Application
     FRONTEND_URL: str = "http://localhost:5173"
     BACKEND_URL: str = "http://localhost:8000"
+    ALLOWED_ORIGINS: list[str] = [
+        "http://localhost:5173",
+        "https://startnext.grodonkey.com",
+    ]
 
     # Admin
     ADMIN_EMAIL: str

@@ -1,15 +1,23 @@
-# User Management System
+# Startnext Prototype
 
-Ein vollständiges Nutzerverwaltungssystem mit FastAPI (Backend) und SvelteKit (Frontend).
+Ein Prototyp der Startnext Crowdfunding Plattform mit FastAPI (Backend) und SvelteKit (Frontend).
 
 ## Features
 
+### Benutzerverwaltung
 - Benutzerregistrierung mit Validierung
 - Login/Logout mit Session-Management und JWT-Tokens
-- Profilansicht und -bearbeitung
-- Admin-Panel mit Nutzerverwaltung
-- Passwort zurücksetzen via E-Mail (Resend)
+- Magic Link Login (passwordless)
+- Profilansicht und -bearbeitung mit Profilseiten
 - Two-Factor-Authentifizierung (TOTP)
+- Passwort zurücksetzen via E-Mail
+
+### Crowdfunding
+- Projektübersicht und -verwaltung
+- Öffentliche Profilseiten für Projektstarter
+
+### Administration
+- Admin-Panel mit Nutzerverwaltung
 - Email-Test-Tool für Admins
 - Zwei Benutzerrollen: Admin und User
 
@@ -40,7 +48,7 @@ Ein vollständiges Nutzerverwaltungssystem mit FastAPI (Backend) und SvelteKit (
 
 ```bash
 git clone <repository-url>
-cd ai-user-administration
+cd startnext-prototype
 ```
 
 ### 2. Backend Setup
@@ -119,7 +127,7 @@ Der Admin-User wird automatisch beim ersten Backend-Start erstellt:
 ## Projektstruktur
 
 ```
-ai-user-administration/
+startnext-prototype/
 ├── backend/                    # FastAPI Backend
 │   ├── routers/               # API Endpoints
 │   ├── models.py              # Datenbankmodelle

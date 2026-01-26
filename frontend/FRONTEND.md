@@ -1,6 +1,6 @@
 # Frontend Dokumentation
 
-SvelteKit-basiertes Frontend für die Nutzerverwaltung.
+SvelteKit-basiertes Frontend für den Startnext Crowdfunding-Plattform Prototypen.
 
 ## Technologie-Stack
 

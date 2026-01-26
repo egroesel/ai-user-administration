@@ -13,14 +13,14 @@ if not run_migrations(engine):
     models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="User Management API",
-    description="API for user authentication and management",
+    title="Startnext Prototype Backend Service",
+    description="API Services for user- and project-management",
     version="1.0.0"
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL],
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -64,9 +64,10 @@ def create_admin_user():
 @app.get("/")
 def root():
     return {
-        "message": "User Management API",
+        "message": "Startnext Prototype Backend Service",
         "docs": "/docs",
-        "version": "1.0.0"
+        "version": "1.0.0",
+        "author": "Elias Groesel"
     }
 
 
