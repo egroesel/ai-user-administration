@@ -345,7 +345,7 @@ export const translations = {
 		'footer.terms': 'AGB',
 		'footer.rights': 'Alle Rechte vorbehalten.',
 		'footer.madeWith': 'Mit',
-		'footer.location': 'in Dresden',
+		'footer.location': 'in Sachsen',
 		'footer.stats.funded': 'von der Crowd finanziert',
 		'footer.stats.projects': 'Erfolgreiche Projekte',
 		'footer.stats.users': 'Nutzer:innen',
@@ -406,7 +406,12 @@ export const translations = {
 		'vibe.error.aiNotConfigured': 'Der KI-Coach ist derzeit nicht verfügbar.',
 		'vibe.error.needMoreMessages': 'Du benötigst noch mehr Nachrichten, um ein Projekt zu erstellen.',
 		'vibe.error.alreadyConverted': 'Dieser Entwurf wurde bereits in ein Projekt umgewandelt.',
-		'vibe.error.titleRequired': 'Der Entwurf benötigt einen Titel.'
+		'vibe.error.titleRequired': 'Der Entwurf benötigt einen Titel.',
+
+		// Error pages
+		'error.pageNotFound': 'Seite nicht gefunden',
+		'error.pageNotFoundDescription': 'Die angeforderte Seite existiert nicht oder wurde verschoben.',
+		'error.backHome': 'Zur Startseite'
 	},
 
 	en: {
@@ -742,7 +747,7 @@ export const translations = {
 		'footer.terms': 'Terms of Service',
 		'footer.rights': 'All rights reserved.',
 		'footer.madeWith': 'Made with',
-		'footer.location': 'in Dresden',
+		'footer.location': 'in Saxony',
 		'footer.stats.funded': 'funded by the crowd',
 		'footer.stats.projects': 'Successful projects',
 		'footer.stats.users': 'Users',
@@ -803,6 +808,11 @@ export const translations = {
 		'vibe.error.aiNotConfigured': 'AI Coach is currently unavailable.',
 		'vibe.error.needMoreMessages': 'You need more messages to create a project.',
 		'vibe.error.alreadyConverted': 'This draft has already been converted to a project.',
-		'vibe.error.titleRequired': 'Draft must have a title.'
+		'vibe.error.titleRequired': 'Draft must have a title.',
+
+		// Error pages
+		'error.pageNotFound': 'Page not found',
+		'error.pageNotFoundDescription': 'The requested page does not exist or has been moved.',
+		'error.backHome': 'Back to home'
 	}
 };

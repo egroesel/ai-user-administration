@@ -4,6 +4,10 @@
 	import { auth } from '$lib/stores/auth';
 	import { theme } from '$lib/stores/theme';
 	import { language, t } from '$lib/stores/language';
+	import { initStoryblok } from '$lib/storyblok';
+
+	// Initialize Storyblok
+	initStoryblok();
 
 	let mobileMenuOpen = false;
 

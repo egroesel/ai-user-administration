@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     BACKEND_URL: str = "http://localhost:8000"
     ALLOWED_ORIGINS: list[str] = [
         "http://localhost:5173",
+        "https://localhost:5173",
         "https://startnext.grodonkey.com",
     ]
 
