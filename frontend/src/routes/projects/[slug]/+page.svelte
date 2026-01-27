@@ -377,6 +377,14 @@
 						<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {getStatusColor(project.status)}">
 							{$t(`project.status.${project.status}`)}
 						</span>
+						{#if project.ai_generated}
+							<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400">
+								<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+								</svg>
+								{$t('project.aiGenerated')}
+							</span>
+						{/if}
 
 						<!-- Submit button next to draft badge -->
 						{#if project.status === 'draft' && isOwner}

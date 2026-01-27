@@ -29,5 +29,14 @@ class Settings(BaseSettings):
     ADMIN_EMAIL: str
     ADMIN_PASSWORD: str
 
+    # OpenAI
+    OPENAI_API_KEY: str = ""
+    OPENAI_ASSISTANT_ID: str = ""
+
+    # AI Coach Settings
+    AI_MAX_ANONYMOUS_MESSAGES: int = 5  # Max messages before login required
+    AI_MIN_MESSAGES_FOR_PROJECT: int = 3  # Min messages before project creation allowed
+    AI_MAX_ANONYMOUS_DRAFTS: int = 2  # Max drafts anonymous users can generate
+
 
 settings = Settings()

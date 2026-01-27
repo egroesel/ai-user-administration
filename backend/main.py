@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, SessionLocal
 import models
-from routers import auth, users, admin, two_factor, projects, profiles
+from routers import auth, users, admin, two_factor, projects, profiles, ai_coach
 from security import get_password_hash
 from config import settings
 from migrations import run_migrations
@@ -32,6 +32,7 @@ app.include_router(admin.router)
 app.include_router(two_factor.router)
 app.include_router(projects.router)
 app.include_router(profiles.router)
+app.include_router(ai_coach.router)
 
 
 @app.on_event("startup")

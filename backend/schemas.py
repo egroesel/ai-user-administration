@@ -162,6 +162,8 @@ class ProjectResponse(ProjectBase):
     start_date: Optional[datetime] = None
     financing_start: Optional[datetime] = None
     financing_end: Optional[datetime] = None
+    ai_generated: bool = False
+    ai_thread_id: Optional[str] = None
     owner: Optional[ProjectOwner] = None
 
     class Config:
@@ -180,6 +182,7 @@ class ProjectListResponse(BaseModel):
     funding_goal: Optional[float] = None
     funding_current: float
     image_url: Optional[str] = None
+    ai_generated: bool = False
     created_at: datetime
     owner: Optional[ProjectOwner] = None
 
@@ -277,3 +280,96 @@ class StarterResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# AI Coach schemas
+class AIGenerateRequest(BaseModel):
+    prompt: str = Field(..., min_length=1)
+    thread_id: Optional[str] = None
+    session_id: Optional[str] = None
+
+
+class AIGenerateResponse(BaseModel):
+    reply: str
+    raw_reply: str
+    thread_id: str
+    message_count: int
+    can_create_project: bool
+    requires_login: bool
+
+
+class AIMessageResponse(BaseModel):
+    id: str
+    content: str
+    is_assistant: bool
+    is_system: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class AIThreadResponse(BaseModel):
+    id: str
+    message_count: int
+    user_message_count: int
+    created_at: datetime
+    messages: list[AIMessageResponse] = []
+
+    class Config:
+        from_attributes = True
+
+
+class AIThreadListItem(BaseModel):
+    id: str
+    first_message: Optional[str] = None
+    message_count: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class AIDraftResponse(BaseModel):
+    id: int
+    thread_id: str
+    title: Optional[str] = None
+    slug: Optional[str] = None
+    short_description: Optional[str] = None
+    description: Optional[str] = None
+    funding_goal: Optional[float] = None
+    project_type: str = "crowdfunding"
+    plan: Optional[str] = "basic"
+    start_date: Optional[datetime] = None
+    duration_days: Optional[int] = None
+    status: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class AIDraftUpdate(BaseModel):
+    title: Optional[str] = None
+    slug: Optional[str] = None
+    short_description: Optional[str] = None
+    description: Optional[str] = None
+    funding_goal: Optional[float] = None
+    project_type: Optional[str] = None
+    plan: Optional[str] = None
+    start_date: Optional[datetime] = None
+    duration_days: Optional[int] = None
+
+
+class AIConvertRequest(BaseModel):
+    thread_id: str
+
+
+class AISettingsResponse(BaseModel):
+    max_anonymous_messages: int
+    min_messages_for_project: int
+    max_anonymous_drafts: int
+
+
+class AIGenerateDraftRequest(BaseModel):
+    session_id: Optional[str] = None

@@ -340,3 +340,63 @@ export async function getSuccessfulStarters(limit = 4) {
 export async function getAllStarters(skip = 0, limit = 50) {
 	return apiRequest(`/api/profiles/starters/all?skip=${skip}&limit=${limit}`);
 }
+
+// AI Coach functions
+export async function getAISettings() {
+	return apiRequest('/api/ai-coach/settings');
+}
+
+export async function aiGenerate(prompt, threadId = null, sessionId = null) {
+	return apiRequest('/api/ai-coach/generate', {
+		method: 'POST',
+		body: JSON.stringify({
+			prompt,
+			thread_id: threadId,
+			session_id: sessionId
+		})
+	});
+}
+
+export async function getAIThread(threadId) {
+	return apiRequest(`/api/ai-coach/threads/${threadId}`);
+}
+
+export async function listAIThreads() {
+	return apiRequest('/api/ai-coach/threads');
+}
+
+export async function claimAIThread(threadId) {
+	return apiRequest(`/api/ai-coach/threads/${threadId}/claim`, {
+		method: 'POST'
+	});
+}
+
+export async function getAIDraft(threadId, sessionId = null) {
+	const url = sessionId
+		? `/api/ai-coach/drafts/${threadId}?session_id=${encodeURIComponent(sessionId)}`
+		: `/api/ai-coach/drafts/${threadId}`;
+	return apiRequest(url);
+}
+
+export async function generateAIDraft(threadId, sessionId = null) {
+	return apiRequest(`/api/ai-coach/drafts/generate/${threadId}`, {
+		method: 'POST',
+		body: JSON.stringify({ session_id: sessionId })
+	});
+}
+
+export async function updateAIDraft(threadId, data, sessionId = null) {
+	const url = sessionId
+		? `/api/ai-coach/drafts/${threadId}?session_id=${encodeURIComponent(sessionId)}`
+		: `/api/ai-coach/drafts/${threadId}`;
+	return apiRequest(url, {
+		method: 'PATCH',
+		body: JSON.stringify(data)
+	});
+}
+
+export async function convertAIDraft(threadId) {
+	return apiRequest(`/api/ai-coach/drafts/${threadId}/convert`, {
+		method: 'POST'
+	});
+}

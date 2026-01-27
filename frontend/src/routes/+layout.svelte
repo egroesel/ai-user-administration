@@ -28,6 +28,15 @@
 					<!-- Main Navigation -->
 					<div class="hidden sm:flex items-center space-x-6">
 						<a
+							href="/vibe"
+							class="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:text-[#06E481] dark:hover:text-[#06E481] transition-colors font-medium"
+						>
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+							</svg>
+							{$t('nav.vibe')}
+						</a>
+						<a
 							href="/projects/new"
 							class="text-gray-700 dark:text-gray-300 hover:text-[#06E481] dark:hover:text-[#06E481] transition-colors font-medium"
 						>
@@ -171,6 +180,16 @@
 		<div class="p-4 space-y-6 overflow-y-auto h-[calc(100%-64px)]">
 			<!-- Main Navigation Links -->
 			<nav class="space-y-1">
+				<a
+					href="/vibe"
+					on:click={closeMobileMenu}
+					class="flex items-center gap-3 px-3 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-[#06E481] rounded-lg transition-colors font-medium"
+				>
+					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+					</svg>
+					{$t('nav.vibe')}
+				</a>
 				<a
 					href="/projects/new"
 					on:click={closeMobileMenu}

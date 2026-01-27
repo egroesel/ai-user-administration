@@ -74,6 +74,10 @@ class Project(Base):
     image_url = Column(String(500), nullable=True)
     video_url = Column(String(500), nullable=True)
 
+    # AI generated flag
+    ai_generated = Column(Boolean, default=False)
+    ai_thread_id = Column(String(36), nullable=True)  # Reference to AI thread that created this
+
     # Relationship
     owner = relationship("User", back_populates="projects")
 
@@ -88,3 +92,66 @@ class Session(Base):
     expires_at = Column(DateTime(timezone=True), nullable=False)
     ip_address = Column(String(45), nullable=True)
     user_agent = Column(Text, nullable=True)
+
+
+# AI Coach Models
+class AIThread(Base):
+    __tablename__ = "ai_threads"
+
+    id = Column(String(36), primary_key=True, index=True)  # UUID
+    openai_thread_id = Column(String(255), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)  # Optional for anonymous
+    session_id = Column(String(255), nullable=True, index=True)  # For anonymous users
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Relationships
+    messages = relationship("AIMessage", back_populates="thread", cascade="all, delete-orphan")
+    draft = relationship("AIDraft", back_populates="thread", uselist=False)
+    user = relationship("User")
+
+
+class AIMessage(Base):
+    __tablename__ = "ai_messages"
+
+    id = Column(String(36), primary_key=True, index=True)  # UUID
+    thread_id = Column(String(36), ForeignKey("ai_threads.id"), nullable=False)
+    content = Column(Text, nullable=False)
+    is_assistant = Column(Boolean, default=False)  # True = AI, False = User
+    is_system = Column(Boolean, default=False)  # True = hidden system prompt
+    token_count = Column(Integer, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Relationship
+    thread = relationship("AIThread", back_populates="messages")
+
+
+class AIDraft(Base):
+    __tablename__ = "ai_drafts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    thread_id = Column(String(36), ForeignKey("ai_threads.id"), unique=True, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    session_id = Column(String(255), nullable=True, index=True)  # For anonymous users
+
+    # Project fields (matching Project model)
+    title = Column(String(255), nullable=True)
+    slug = Column(String(255), nullable=True)
+    short_description = Column(String(500), nullable=True)
+    description = Column(Text, nullable=True)
+    funding_goal = Column(Numeric(12, 2), nullable=True)
+    project_type = Column(String(50), default="crowdfunding")
+    plan = Column(String(50), nullable=True)  # basic, pro, premium, enterprise
+    start_date = Column(DateTime(timezone=True), nullable=True)
+    duration_days = Column(Integer, nullable=True)
+
+    # Status
+    status = Column(String(50), default="draft")  # draft, converted
+    converted_project_id = Column(Integer, ForeignKey("projects.id"), nullable=True)
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    # Relationships
+    thread = relationship("AIThread", back_populates="draft")
+    user = relationship("User")
+    converted_project = relationship("Project")

@@ -26,3 +26,9 @@ resend==0.7.0
 
 # Utilities
 python-dotenv==1.0.0
+
+# OpenAI
+openai==1.59.9
+
+# Markdown parsing
+markdown==3.7
