@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "build:ios": "VITE_BUILD_TARGET=capacitor vite build && npx cap sync ios",
+    "build:android": "VITE_BUILD_TARGET=capacitor vite build && npx cap sync android",
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run"
