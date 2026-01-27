@@ -8,6 +8,7 @@ SvelteKit-basiertes Frontend für den Startnext Crowdfunding-Plattform Prototype
 - **Styling**: Tailwind CSS 3.4
 - **Build Tool**: Vite 5.0
 - **Runtime**: Node.js 18+
+- **CMS**: Storyblok (Headless CMS)
 
 ## Installation
 
@@ -150,3 +151,72 @@ npm run build
 ```
 
 Die Dateien in `build/` können auf jeden Static-Host kopiert werden.
+
+## Storyblok CMS
+
+Storyblok wird als Headless CMS für Content-Seiten (Impressum, Datenschutz, etc.) verwendet.
+
+### Konfiguration
+
+Die Storyblok-Konfiguration befindet sich in `src/lib/storyblok.js`:
+
+```javascript
+import { storyblokInit, apiPlugin } from '@storyblok/svelte';
+
+storyblokInit({
+  accessToken: 'your-access-token',
+  use: [apiPlugin],
+  apiOptions: { region: 'eu' },
+  components: {
+    page: Page,
+    teaser: Teaser,
+    feature: Feature,
+    grid: Grid,
+    richtext: RichText
+  }
+});
+```
+
+### Verfügbare Komponenten
+
+| Komponente | Beschreibung | Felder |
+|------------|--------------|--------|
+| `page` | Seitencontainer | `body` (Bloks) |
+| `teaser` | Hero/Teaser-Bereich | `headline`, `subheadline`, `image` |
+| `feature` | Feature-Karte | `name`, `description`, `icon`, `link` |
+| `grid` | Grid-Layout | `headline`, `columns`, `columns_content` |
+| `richtext` | Rich-Text-Inhalt | `content` (Richtext) |
+
+### Routing
+
+Content-Seiten werden über eine Catch-All-Route ausgeliefert:
+
+- `/impressum` → Story mit Slug `impressum`
+- `/datenschutz` → Story mit Slug `datenschutz`
+- `/ueber-uns/team` → Story mit Slug `ueber-uns/team`
+
+Die Route befindet sich in `src/routes/[...slug]/`.
+
+### Visual Editor
+
+Für den Storyblok Visual Editor ist HTTPS erforderlich. In der Entwicklung wird dies durch `vite-plugin-mkcert` ermöglicht:
+
+```javascript
+// vite.config.js
+import mkcert from 'vite-plugin-mkcert';
+
+export default defineConfig({
+  plugins: [sveltekit(), mkcert()],
+  server: {
+    https: true
+  }
+});
+```
+
+Preview-URL im Storyblok: `https://localhost:5173/`
+
+### Neue Komponente erstellen
+
+1. Svelte-Komponente in `src/lib/components/storyblok/` erstellen
+2. Komponente in `src/lib/storyblok.js` registrieren
+3. Block-Typ mit gleichen Namen in Storyblok anlegen

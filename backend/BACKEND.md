@@ -149,6 +149,41 @@ backend/
 - `POST /api/2fa/verify` - 2FA verifizieren
 - `POST /api/2fa/disable` - 2FA deaktivieren
 
+### AI Coach
+
+Der KI-gestützte Projektassistent hilft Nutzern bei der Entwicklung ihrer Projektideen.
+
+- `POST /api/ai-coach/generate` - Nachricht an den AI Coach senden
+- `GET /api/ai-coach/threads/{thread_id}` - Thread-Verlauf abrufen
+- `POST /api/ai-coach/threads/{thread_id}/claim` - Thread bei Login übernehmen
+- `GET /api/ai-coach/settings` - AI Coach Einstellungen abrufen
+- `POST /api/ai-coach/drafts/generate/{thread_id}` - Projektentwurf generieren
+- `GET /api/ai-coach/drafts/{thread_id}` - Projektentwurf abrufen
+- `PATCH /api/ai-coach/drafts/{thread_id}` - Projektentwurf aktualisieren
+- `POST /api/ai-coach/drafts/{thread_id}/convert` - Entwurf in Projekt umwandeln
+
+#### Konfiguration
+
+In der `.env`:
+
+```env
+# OpenAI
+OPENAI_API_KEY=sk-your-openai-api-key
+OPENAI_ASSISTANT_ID=asst_your_assistant_id
+
+# AI Coach Settings (optional)
+AI_MAX_ANONYMOUS_MESSAGES=5    # Max Nachrichten ohne Login
+AI_MIN_MESSAGES_FOR_PROJECT=3  # Min Nachrichten für Projekterstellung
+AI_MAX_ANONYMOUS_DRAFTS=2      # Max Entwürfe ohne Login
+```
+
+#### Funktionsweise
+
+1. **Anonyme Nutzung**: Nutzer können ohne Login bis zu 5 Nachrichten senden und 2 Projektentwürfe erstellen
+2. **Session-Tracking**: Anonyme Nutzer werden über eine Session-ID identifiziert
+3. **Thread-Übernahme**: Bei Login werden anonyme Threads dem Nutzer zugeordnet
+4. **Projekterstellung**: Nach genügend Konversation kann ein Projektentwurf generiert werden
+
 ## Datenbank-Modelle
 
 ### User
