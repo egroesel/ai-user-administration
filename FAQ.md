@@ -183,6 +183,84 @@ Nach Änderung des `ADMIN_PASSWORD` in der `backend/.env`:
 4. Der Link ist **1 Stunde** gültig
 5. Setze ein neues Passwort
 
+## Datei-Uploads (Avatare & Projektbilder)
+
+### Wie lade ich ein Profilbild hoch?
+
+1. Gehe zu **Profil → Einstellungen**
+2. Klicke auf **"Avatar hochladen"**
+3. Wähle ein Bild aus (max. 5 MB, JPG/PNG)
+4. Das Bild wird sofort gespeichert
+
+### Wie lade ich ein Projektbild hoch?
+
+1. Öffne dein Projekt
+2. Aktiviere den **Bearbeitungsmodus**
+3. Klicke auf das Projektbild
+4. Wähle **"Bild hochladen"** oder gib eine externe URL ein
+
+### Welche Dateiformate werden unterstützt?
+
+- **Bilder**: JPG, JPEG, PNG, GIF, WebP
+- **Maximale Größe**: 5 MB pro Datei
+
+### Wo werden die Dateien gespeichert?
+
+**Lokal (Development)**:
+```
+backend/uploads/
+├── avatars/      # Profilbilder
+└── projects/     # Projektbilder
+```
+
+**Produktion (Railway)**:
+- Nutze ein **Persistent Volume** für dauerhafte Speicherung
+- Konfiguriere `UPLOAD_DIR` als Environment Variable
+
+### Wie richte ich Railway Volumes ein?
+
+1. Gehe zu deinem Railway-Projekt
+2. Klicke auf **"New Volume"**
+3. Setze den **Mount Path**: `/app/uploads`
+4. Füge die Environment Variable hinzu:
+   ```env
+   UPLOAD_DIR=/app/uploads
+   ```
+
+### Warum werden Bilder nicht angezeigt?
+
+**Prüfe folgendes:**
+
+1. **Backend läuft**: Bilder werden über `/uploads/...` ausgeliefert
+2. **VITE_API_URL korrekt**: Frontend muss die vollständige URL kennen
+   ```env
+   VITE_API_URL=http://localhost:8000
+   ```
+3. **Datei existiert**: Prüfe ob die Datei im `uploads/`-Ordner liegt
+4. **Berechtigungen**: Der Ordner muss beschreibbar sein
+   ```bash
+   chmod -R 755 backend/uploads
+   ```
+
+### Kann ich externe Bild-URLs verwenden?
+
+Ja, bei Projektbildern kannst du auch eine **externe URL** eingeben (z.B. von Unsplash, Cloudinary, etc.). Das Bild wird dann nicht lokal gespeichert.
+
+### Wie lösche ich ein hochgeladenes Bild?
+
+**Avatar**:
+1. Gehe zu **Profil → Einstellungen**
+2. Klicke auf **"Avatar löschen"**
+
+**Projektbild**:
+1. Aktiviere den **Bearbeitungsmodus** im Projekt
+2. Klicke auf das Bild
+3. Klicke auf **"Bild löschen"**
+
+### Werden alte Bilder automatisch gelöscht?
+
+Ja, wenn du ein neues Bild hochlädst, wird das alte automatisch vom Server entfernt.
+
 ## Two-Factor Authentication (2FA)
 
 ### Wie aktiviere ich 2FA?
@@ -372,7 +450,7 @@ vercel
 
 3. **Falscher API_URL**: Prüfe `frontend/.env`
    ```env
-   PUBLIC_API_URL=http://localhost:8000
+   VITE_API_URL=http://localhost:8000
    ```
 
 ### "Database connection error"
