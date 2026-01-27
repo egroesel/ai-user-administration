@@ -176,9 +176,7 @@
 					on:click={closeMobileMenu}
 					class="flex items-center gap-3 px-3 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-[#06E481] rounded-lg transition-colors font-medium"
 				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-					</svg>
+					<span class="text-lg">🚀</span>
 					{$t('nav.startProject')}
 				</a>
 				<a
