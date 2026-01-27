@@ -16,6 +16,17 @@ Ein Prototyp der Startnext Crowdfunding Plattform mit FastAPI (Backend) und Svel
 - Projektübersicht und -verwaltung
 - Öffentliche Profilseiten für Projektstarter
 
+### AI Coach
+- KI-gestützter Projektassistent für Ideenentwicklung
+- Anonyme Nutzung mit Session-Tracking
+- Automatische Projektentwurf-Generierung
+- Inline-Bearbeitung der generierten Entwürfe
+
+### Content Management
+- Storyblok CMS für Content-Seiten (Impressum, Datenschutz, etc.)
+- Visual Editor Unterstützung
+- Dynamisches Routing für CMS-Inhalte
+
 ### Administration
 - Admin-Panel mit Nutzerverwaltung
 - Email-Test-Tool für Admins
@@ -27,13 +38,15 @@ Ein Prototyp der Startnext Crowdfunding Plattform mit FastAPI (Backend) und Svel
 - FastAPI + Python
 - PostgreSQL + SQLAlchemy
 - JWT + bcrypt
-- Resend (Email)
 - PyOTP (2FA)
+- Resend (Email)
+- OpenAI API (AI Coach)
 
 **Frontend:**
 - SvelteKit
 - Tailwind CSS
 - Vite
+- Storyblok CMS
 
 ## Schnellstart
 
@@ -130,6 +143,8 @@ Der Admin-User wird automatisch beim ersten Backend-Start erstellt:
 startnext-prototype/
 ├── backend/                    # FastAPI Backend
 │   ├── routers/               # API Endpoints
+│   │   ├── ai_coach.py        # AI Coach Endpunkte
+│   │   └── ...
 │   ├── models.py              # Datenbankmodelle
 │   ├── schemas.py             # API Schemas
 │   ├── security.py            # Authentifizierung
@@ -141,8 +156,13 @@ startnext-prototype/
 │
 ├── frontend/                  # SvelteKit Frontend
 │   ├── src/
-│   │   ├── lib/api.js        # API Client
-│   │   └── routes/           # Seiten
+│   │   ├── lib/
+│   │   │   ├── api.js              # API Client
+│   │   │   ├── storyblok.js        # Storyblok CMS Config
+│   │   │   └── components/storyblok/ # CMS Komponenten
+│   │   └── routes/
+│   │       ├── vibe/               # AI Coach
+│   │       └── [...slug]/          # Storyblok CMS Seiten
 │   ├── package.json          # Node Dependencies
 │   └── FRONTEND.md           # Frontend-Dokumentation
 │
@@ -165,6 +185,8 @@ Vollständige API-Dokumentation: `http://localhost:8000/docs`
 - `POST /api/admin/test-email` - Test-Email senden (Admin)
 - `POST /api/2fa/setup` - 2FA einrichten
 - `POST /api/2fa/verify` - 2FA aktivieren
+- `POST /api/ai-coach/generate` - AI Coach Nachricht senden
+- `POST /api/ai-coach/drafts/generate/{thread_id}` - Projektentwurf generieren
 
 ## Sicherheit
 
