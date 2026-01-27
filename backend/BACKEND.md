@@ -296,9 +296,38 @@ send_test_email(
 
 ### Backend Tests ausführen
 
+Die Tests verwenden pytest mit einer SQLite In-Memory-Datenbank für schnelle Ausführung.
+
 ```bash
+# Alle Tests ausführen
 pytest
+
+# Tests mit detaillierter Ausgabe
+pytest -v
+
+# Einzelne Testdatei ausführen
+pytest tests/test_auth.py
+
+# Tests mit Coverage Report
+pytest --cov=. --cov-report=html
 ```
+
+#### Test-Struktur
+
+```
+tests/
+├── conftest.py         # Test-Fixtures und Konfiguration
+├── test_auth.py        # Authentifizierungs-Tests
+├── test_users.py       # Benutzerprofil-Tests
+├── test_projects.py    # Projekt-CRUD-Tests
+└── test_ai_coach.py    # AI Coach-Tests
+```
+
+#### Wichtige Test-Fixtures
+
+- `client`: TestClient mit frischer Datenbank
+- `auth_headers`: Authentifizierungs-Header für eingeloggten User
+- `registered_user`: Registrierter Test-User
 
 ### Datenbank-Migrationen (Alembic)
 
