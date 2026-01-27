@@ -22,8 +22,8 @@
 
 <div class="min-h-[calc(100vh-4rem)] bg-gray-100 dark:bg-gray-900">
 	<div class="flex">
-		<!-- Sidebar -->
-		<aside class="w-64 bg-white dark:bg-gray-800 shadow-md min-h-[calc(100vh-4rem)]">
+		<!-- Sidebar - hidden on mobile -->
+		<aside class="hidden md:block w-64 bg-white dark:bg-gray-800 shadow-md min-h-[calc(100vh-4rem)] flex-shrink-0">
 			<div class="p-6 border-b border-gray-200 dark:border-gray-700">
 				<h2 class="text-xl font-bold text-[#304b50] dark:text-white">{$t('admin.title')}</h2>
 			</div>
@@ -74,8 +74,39 @@
 		</aside>
 
 		<!-- Main Content -->
-		<main class="flex-1 p-8">
-			<slot />
+		<main class="flex-1 min-w-0 overflow-hidden p-4 md:p-8">
+			<!-- Mobile Tab Navigation -->
+			<nav class="md:hidden mb-4 -mx-4 px-4 overflow-x-auto">
+				<div class="flex gap-2 min-w-max">
+					<a
+						href="/admin/projects"
+						class="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors {currentPath === '/admin/projects' || currentPath === '/admin'
+							? 'bg-[#06E481] text-[#304b50]'
+							: 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'}"
+					>
+						{$t('admin.projectManagement')}
+					</a>
+					<a
+						href="/admin/users"
+						class="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors {currentPath === '/admin/users'
+							? 'bg-[#06E481] text-[#304b50]'
+							: 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'}"
+					>
+						{$t('admin.userManagement')}
+					</a>
+					<a
+						href="/admin/system"
+						class="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors {currentPath === '/admin/system' || currentPath.startsWith('/admin/system/')
+							? 'bg-[#06E481] text-[#304b50]'
+							: 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'}"
+					>
+						{$t('admin.system')}
+					</a>
+				</div>
+			</nav>
+			<div class="overflow-x-auto">
+				<slot />
+			</div>
 		</main>
 	</div>
 </div>
